@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { NextPage } from "next";
 
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
@@ -11,7 +12,6 @@ import PlaceKindSelector from "../components/PlaceKindSelector";
 import CrowdLevelSlider from "../components/CrowdLevelSlider";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
 import { PlaceModifier } from "../enums/PlaceModifier";
-import Box from "@material-ui/core/Box";
 
 export const Share: NextPage = () => {
   const [placeKind, setPlaceKind] = useState(PlaceModifier.MINI);

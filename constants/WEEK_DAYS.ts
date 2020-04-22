@@ -1,6 +1,6 @@
 import { WeekDay } from "../enums/WeekDay";
 
-export const WEEK_DAYS = [
+export const WEEK_DAYS: WeekDay[] = [
   WeekDay.MON,
   WeekDay.TUE,
   WeekDay.WED,
