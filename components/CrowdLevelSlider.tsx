@@ -42,7 +42,7 @@ export interface ICrowdLevelSliderProps {
 }
 
 export const CrowdLevelSlider = ({ onChange, defaultValue = 50 }: ICrowdLevelSliderProps) => {
-  const [level, setLevel] = useState(defaultValue);
+  const [level, setLevel] = useState(undefined);
   
   function handleLevelChanged({ target }: ChangeEvent<{ value: number }>) {
     setLevel(target.value);
@@ -50,15 +50,14 @@ export const CrowdLevelSlider = ({ onChange, defaultValue = 50 }: ICrowdLevelSli
   }
 
   return (
-    <div>
-      <Slider
-        defaultValue={level}
-        value={level}
-        step={10}
-        marks={marks}
-        onChange={handleLevelChanged}
-      />
-    </div>
+    <Slider
+      defaultValue={defaultValue}
+      value={level}
+      step={1}
+      valueLabelDisplay='auto'
+      marks={marks}
+      onChange={handleLevelChanged}
+    />
   )
 }
 

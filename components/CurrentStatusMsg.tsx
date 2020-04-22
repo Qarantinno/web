@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
 
 import { date } from '../utils/date'
-import { Box } from '@material-ui/core';
 
 export const CurrentStatusMsg = () => {
   const initialDate = date();
@@ -22,16 +21,12 @@ export const CurrentStatusMsg = () => {
         <CheckIcon fontSize="large" fontWeight="bold" />
       </Grid>
       <Grid item>
-        <Box textAlign="center">
-          <Typography variant="overline" align="center" onClick={handleClick}>
-            {time}
-          </Typography>
-        </Box>
-        <Box textAlign="center">
-          <Typography>
-            Perfect time for shopping!
-          </Typography>
-        </Box>
+        <Typography display='block' variant="overline" align="center" onClick={handleClick}>
+          {time}
+        </Typography>
+        <Typography align="center">
+          Perfect time for shopping!
+        </Typography>
       </Grid>
     </Grid>
   );
