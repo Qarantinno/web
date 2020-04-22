@@ -7,7 +7,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import { date } from '../utils/date'
 import { Box } from '@material-ui/core';
 
-export const StatusMessage = () => {
+export const CurrentStatusMsg = () => {
   const initialDate = date();
   const [time, setTime] = useState(initialDate);
   
@@ -37,4 +37,4 @@ export const StatusMessage = () => {
   );
 }
 
-export default StatusMessage;
+export default CurrentStatusMsg;

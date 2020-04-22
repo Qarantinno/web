@@ -6,7 +6,7 @@ import Fab from '@material-ui/core/Fab';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 
-export const BackBtn = () => (
+export const ReturnToMainPageBtn = () => (
   <Link href="/">
     <Fab color="primary" aria-label="add" size="large">
       <ArrowBack fontSize="large" />
@@ -14,4 +14,4 @@ export const BackBtn = () => (
   </Link>
 )
 
-export default BackBtn;
+export default ReturnToMainPageBtn;

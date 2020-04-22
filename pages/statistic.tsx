@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 import PlaceSelector from '../components/PlaceSelector';
 import Layout from '../components/Layout';
-import BackBtn from '../components/BackBtn';
+import ReturnToMainPageBtn from '../components/ReturnToMainPageBtn';
 import PlaceKindSelector from '../components/PlaceKindSelector';
 import CrowdLevelSlider from '../components/CrowdLevelSlider';
 import { IPlace } from '../interfaces/IPlace';
@@ -40,7 +40,7 @@ export const Statistic: NextPage<IStatisticProps> = ({ places }) => {
     <Layout>
       <Grid container direction="column" spacing={5}>
         <Grid item>
-          <BackBtn />
+          <ReturnToMainPageBtn />
         </Grid>
         <Grid item>
           <PlaceSelector onChange={handlePlaceChanged} selected={place} places={places}/>

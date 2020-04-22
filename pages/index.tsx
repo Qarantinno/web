@@ -3,22 +3,23 @@ import React from 'react';
 import { NextPage } from 'next';
 
 import Grid from '@material-ui/core/Grid';
-import MainChart from '../components/MainChart';
-import MainActionBtn from '../components/MainActionBtn';
-import StatusMessage from '../components/StatusMessage';
+
+import CurrentCrowdLevelChart from '../components/CurrentCrowdLevelChart';
+import ShareCrowdLevelBtn from '../components/ShareCrowdLevelBtn';
+import CurrentStatusMsg from '../components/CurrentStatusMsg';
 import Layout from '../components/Layout';
 
 export const Home: NextPage = () => (
   <Layout>
     <Grid container direction="column" spacing={5}>
       <Grid item>
-        <StatusMessage />
+        <CurrentStatusMsg />
       </Grid>
       <Grid item>
-        <MainChart />
+        <CurrentCrowdLevelChart />
       </Grid>
       <Grid item>
-        <MainActionBtn />
+        <ShareCrowdLevelBtn />
       </Grid>
     </Grid>
   </Layout>

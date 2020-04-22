@@ -18,7 +18,7 @@ const mockedData = [
   { time: '14', crowdLevel: 3.682 },
 ];
 
-export const MainChart = () => {
+export const CurrentCrowdLevelChart = () => {
   const [targetItem, setTargetItem] = useState(undefined);
 
   return (
@@ -53,4 +53,4 @@ export const MainChart = () => {
   )
 };
 
-export default MainChart;
+export default CurrentCrowdLevelChart;
