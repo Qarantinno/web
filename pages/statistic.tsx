@@ -37,12 +37,14 @@ export const Statistic: NextPage = () => {
           <ReturnToMainPageBtn />
         </Grid>
         <Grid item>
-          <FormControl fullWidth>
+          <FormControl fullWidth variant="outlined">
             <InputLabel id="place-kind-label">The place kind</InputLabel>
             <Select
+              id="place-kind"
               labelId="place-kind-label"
               onChange={handlePlaceKindChanged}
               value={placeKind}
+              label="The place kind"
             >
               <MenuItem value={PlaceModifier.ANY}>{PlaceModifier.ANY}</MenuItem>
               {PLACE_KINDS.map((place) => (
@@ -54,12 +56,14 @@ export const Statistic: NextPage = () => {
           </FormControl>
         </Grid>
         <Grid item>
-          <FormControl fullWidth>
+          <FormControl fullWidth variant="outlined">
             <InputLabel id="week-day-label">Week day</InputLabel>
             <Select
+              id="week-day"
               labelId="week-day-label"
               onChange={handleWeekDayChanged}
               value={weekDay}
+              label="Week day"
             >
               <MenuItem value={WeekDay.ANY}>{PlaceModifier.ANY}</MenuItem>
               {WEEK_DAYS.map((weekDay) => (
