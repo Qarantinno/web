@@ -1,0 +1,30 @@
+{
+  "msg-desktop-share": "Share what you see in a store right now, that's available from your smartphone!",
+
+  "status-perfect": "Perfect time for shopping!",
+  "status-nice": "That’s a nice time for shopping!",
+  "status-not-best": "Perhaps not the best moment",
+  "status-no-way": "Better stay home",
+  "btn-label-discover": "Discover statistic",
+
+  "msg-thanks-for-share": "Thanks for sharing you experience. We do really appreciate it!",
+  "msg-do-share": "I'm shopping now, share my experience",
+
+  "option-place-product-store": "Product store",
+  "option-modifier-mini": "Mini/local",
+  "option-modifier-super": "Supermarket",
+  "option-modifier-hyper": "Hyper",
+
+  "btn-label-add-comment": "Add a comment",
+  "btn-label-post": "Post",
+
+  "option-modifier-any": "Any kind",
+  "option-week-day-any": "Any week day",
+  "option-week-day-mon": "Mon",
+  "option-week-day-tue": "Tue",
+  "option-week-day-wed": "Wed",
+  "option-week-day-thu": "Thu",
+  "option-week-day-fri": "Fri",
+  "option-week-day-sat": "Sat",
+  "option-week-day-san": "Sun"
+}

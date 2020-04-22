@@ -1,0 +1,30 @@
+{
+  "msg-desktop-share": "Поделись тем что видишь в магазине сейчас, функция доступна на смартфоне",
+
+  "status-perfect": "Лучшее время идти за покупками!",
+  "status-nice": "Хорошее время для похода в магазин!",
+  "status-not-best": "Пожалуй не лучшее время",
+  "status-no-way": "Лучше остаться дома",
+  "btn-label-discover": "Изучи статистику",
+
+  "msg-thanks-for-share": "Спасибо за помощь! Эта информация поможет улучшить статистику.",
+  "msg-do-share": "Поделись тем, что видишь сейчас в магазине",
+
+  "option-place-product-store": "Магазин",
+  "option-modifier-mini": "Небольшой",
+  "option-modifier-super": "Супермаркет",
+  "option-modifier-hyper": "Гипермаркет",
+
+  "btn-label-add-comment": "Добавить комментарий",
+  "btn-label-post": "Отправить",
+
+  "option-modifier-any": "Любой размер",
+  "option-week-day-any": "Любой день недели",
+  "option-week-day-mon": "Пн",
+  "option-week-day-tue": "Вт",
+  "option-week-day-wed": "Ср",
+  "option-week-day-thu": "Чт",
+  "option-week-day-fri": "Пт",
+  "option-week-day-sat": "Сб",
+  "option-week-day-san": "Вс"
+}

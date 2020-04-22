@@ -1,4 +1,7 @@
 import React from 'react';
+
+import Link from 'next/link';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
@@ -10,9 +13,11 @@ export const MainActionBtn = () => (
       <Typography>I'm shopping now, Share my experience</Typography>
     </Grid>
     <Grid item>
-      <Fab color="primary" aria-label="add" size="large">
-        <AddIcon fontSize="large" />
-      </Fab>
+      <Link href="/share">
+        <Fab color="primary" aria-label="add" size="large">
+          <AddIcon fontSize="large" />
+        </Fab>
+      </Link>
     </Grid>
   </Grid>
 );

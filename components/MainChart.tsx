@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+
 import Paper from '@material-ui/core/Paper';
 import NoSsr from '@material-ui/core/NoSsr';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+
 import { scaleBand } from '@devexpress/dx-chart-core';
 import { ArgumentScale, EventTracker } from '@devexpress/dx-react-chart';
 import { Chart, BarSeries, ArgumentAxis, ValueAxis, Tooltip } from '@devexpress/dx-react-chart-material-ui';
+import Link from 'next/link';
 
 const mockedData = [
   { time: '10', crowdLevel: 6.930 },
@@ -39,9 +42,11 @@ export const MainChart = () => {
           </Paper>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="inherit">
-            Discover statistic
-          </Button>
+          <Link href="/statistic">
+            <Button variant="contained" color="inherit">
+              Discover statistic
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </NoSsr>
