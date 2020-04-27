@@ -1,6 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
-
-import { NextPage } from "next";
+import React, { useState } from "react";
 
 import Select from "@material-ui/core/Select";
 import Grid from "@material-ui/core/Grid";
@@ -13,20 +11,17 @@ import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
 import CrowdChart from "../components/CrowdChart";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
 import { WEEK_DAYS } from "../constants/WEEK_DAYS";
-import { PlaceModifier } from "../enums/PlaceModifier";
-import { WeekDay } from "../enums/WeekDay";
+import { withTranslation } from "../i18n";
 
-export const Statistic: NextPage = () => {
-  const [placeKind, setPlaceKind] = useState(PlaceModifier.ANY);
-  const [weekDay, setWeekDay] = useState(WeekDay.ANY);
+const Statistic = ({ t }) => {
+  const [placeKind, setPlaceKind] = useState("any");
+  const [weekDay, setWeekDay] = useState("any");
 
-  function handlePlaceKindChanged({
-    target,
-  }: ChangeEvent<{ value: PlaceModifier }>) {
+  function handlePlaceKindChanged({ target }) {
     setPlaceKind(target.value);
   }
 
-  function handleWeekDayChanged({ target }: ChangeEvent<{ value: WeekDay }>) {
+  function handleWeekDayChanged({ target }) {
     setWeekDay(target.value);
   }
 
@@ -38,18 +33,20 @@ export const Statistic: NextPage = () => {
         </Grid>
         <Grid item>
           <FormControl fullWidth variant="outlined">
-            <InputLabel id="place-kind-label">The place kind</InputLabel>
+            <InputLabel id="place-kind-label">
+              {t("option-label-modifier")}
+            </InputLabel>
             <Select
               id="place-kind"
               labelId="place-kind-label"
               onChange={handlePlaceKindChanged}
               value={placeKind}
-              label="The place kind"
+              label={t("option-label-modifier")}
             >
-              <MenuItem value={PlaceModifier.ANY}>{PlaceModifier.ANY}</MenuItem>
+              <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
               {PLACE_KINDS.map((place) => (
                 <MenuItem key={place} value={place}>
-                  {place}
+                  {t(`option-modifier-${place}`)}
                 </MenuItem>
               ))}
             </Select>
@@ -57,18 +54,20 @@ export const Statistic: NextPage = () => {
         </Grid>
         <Grid item>
           <FormControl fullWidth variant="outlined">
-            <InputLabel id="week-day-label">Week day</InputLabel>
+            <InputLabel id="week-day-label">
+              {t("option-label-week-day")}
+            </InputLabel>
             <Select
               id="week-day"
               labelId="week-day-label"
               onChange={handleWeekDayChanged}
               value={weekDay}
-              label="Week day"
+              label={t("option-label-week-day")}
             >
-              <MenuItem value={WeekDay.ANY}>{PlaceModifier.ANY}</MenuItem>
+              <MenuItem value="any">{t("option-week-day-any")}</MenuItem>
               {WEEK_DAYS.map((weekDay) => (
                 <MenuItem key={weekDay} value={weekDay}>
-                  {weekDay}
+                  {t(`option-week-day-${weekDay}`)}
                 </MenuItem>
               ))}
             </Select>
@@ -82,4 +81,8 @@ export const Statistic: NextPage = () => {
   );
 };
 
-export default Statistic;
+Statistic.getInitialProps = async () => ({
+  namespacesRequired: ["common"],
+});
+
+export default withTranslation("common")(Statistic);

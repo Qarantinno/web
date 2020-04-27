@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-
-import { NextPage } from "next";
+import PropTypes from "prop-types";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -11,17 +10,17 @@ import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
 import PlaceKindSelector from "../components/PlaceKindSelector";
 import CrowdLevelSlider from "../components/CrowdLevelSlider";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
-import { PlaceModifier } from "../enums/PlaceModifier";
+import { withTranslation } from "../i18n";
 
-export const Share: NextPage = () => {
-  const [placeKind, setPlaceKind] = useState(PlaceModifier.MINI);
+const Share = ({ t }) => {
+  const [placeKind, setPlaceKind] = useState("mini");
   const [crowdLevel, setCrowdLevel] = useState(50);
 
-  function handlePlaceKindChanged(kind: PlaceModifier) {
+  function handlePlaceKindChanged(kind) {
     setPlaceKind(kind);
   }
 
-  function handleCrowdLevelChanged(level: number) {
+  function handleCrowdLevelChanged(level) {
     setCrowdLevel(level);
   }
 
@@ -47,7 +46,7 @@ export const Share: NextPage = () => {
         <Grid item>
           <Box justifyContent="center" display="flex">
             <Button size="large" variant="contained" color="primary">
-              Post
+              {t("btn-label-post")}
             </Button>
           </Box>
         </Grid>
@@ -56,4 +55,12 @@ export const Share: NextPage = () => {
   );
 };
 
-export default Share;
+Share.getInitialProps = async () => ({
+  namespacesRequired: ["common"],
+});
+
+Share.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("common")(Share);

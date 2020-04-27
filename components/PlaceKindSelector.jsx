@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-import { PlaceModifier } from "../enums/PlaceModifier";
-import { palette } from "../utils/theme";
+import theme from "../utils/theme";
+import { withTranslation } from "../i18n";
+import PropTypes from "prop-types";
 
 const useClasses = makeStyles({
   paper: {
@@ -22,21 +23,11 @@ const useClasses = makeStyles({
   },
 });
 
-export interface IPlaceKindSelectorProps {
-  kinds: PlaceModifier[];
-  selected?: PlaceModifier;
-  onChange: (kind: PlaceModifier) => void;
-}
-
-export const PlaceKindSelector = ({
-  kinds,
-  selected,
-  onChange,
-}: IPlaceKindSelectorProps) => {
+const PlaceKindSelector = ({ t, kinds, selected, onChange }) => {
   const [selectedKind, setSelectedKind] = useState(selected);
   const classes = useClasses();
 
-  function handleKindChanged({ target }: ChangeEvent<{ value: string }>) {
+  function handleKindChanged({ target }) {
     const changed = kinds.find((kind) => kind === target.value);
 
     if (changed) {
@@ -52,9 +43,9 @@ export const PlaceKindSelector = ({
           <label>
             <input
               type="radio"
-              checked={selectedKind === kind}
+              checked={selectedKind === kind.id}
               onChange={handleKindChanged}
-              value={kind}
+              value={kind.id}
               hidden
             />
             <Paper
@@ -63,11 +54,13 @@ export const PlaceKindSelector = ({
               style={{
                 backgroundColor:
                   kind === selectedKind
-                    ? palette.background.default
-                    : palette.background.paper,
+                    ? theme.palette.background.default
+                    : theme.palette.background.paper,
               }}
             >
-              <Typography variant="overline">{kind}</Typography>
+              <Typography variant="overline">
+                {t(`option-modifier-${kind}`)}
+              </Typography>
             </Paper>
           </label>
         </Grid>
@@ -76,4 +69,11 @@ export const PlaceKindSelector = ({
   );
 };
 
-export default PlaceKindSelector;
+PlaceKindSelector.propTypes = {
+  selected: PropTypes.string.isRequired,
+  kinds: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("common")(PlaceKindSelector);

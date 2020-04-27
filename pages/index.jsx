@@ -1,6 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-import { NextPage } from "next";
 import Link from "next/link";
 
 import Grid from "@material-ui/core/Grid";
@@ -10,12 +10,13 @@ import CrowdChart from "../components/CrowdChart";
 import ShareCrowdLevelBtn from "../components/ShareCrowdLevelBtn";
 import CurrentStatusMsg from "../components/CurrentStatusMsg";
 import Layout from "../components/Layout";
+import { withTranslation } from "../i18n";
 
-export const Home: NextPage = () => (
+export const Home = ({ t }) => (
   <Layout>
     <Grid container direction="column" spacing={5}>
       <Grid item>
-        <CurrentStatusMsg />
+        <CurrentStatusMsg text={t("status-perfect")} />
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center" spacing={5}>
@@ -25,17 +26,25 @@ export const Home: NextPage = () => (
           <Grid item>
             <Link href="/statistic">
               <Button variant="contained" color="inherit">
-                Discover statistic
+                {t("btn-label-discover")}
               </Button>
             </Link>
           </Grid>
         </Grid>
       </Grid>
       <Grid item>
-        <ShareCrowdLevelBtn />
+        <ShareCrowdLevelBtn text={t("msg-do-share")} />
       </Grid>
     </Grid>
   </Layout>
 );
 
-export default Home;
+Home.getInitialProps = async () => ({
+  namespacesRequired: ["common"],
+});
+
+Home.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("common")(Home);

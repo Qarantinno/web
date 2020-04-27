@@ -18,6 +18,8 @@
   "btn-label-add-comment": "Add a comment",
   "btn-label-post": "Post",
 
+  "option-label-week-day": "Week day",
+  "option-label-modifier": "Place kind",
   "option-modifier-any": "Any kind",
   "option-week-day-any": "Any week day",
   "option-week-day-mon": "Mon",
@@ -26,5 +28,5 @@
   "option-week-day-thu": "Thu",
   "option-week-day-fri": "Fri",
   "option-week-day-sat": "Sat",
-  "option-week-day-san": "Sun"
+  "option-week-day-sun": "Sun"
 }

@@ -18,6 +18,8 @@
   "btn-label-add-comment": "Добавить комментарий",
   "btn-label-post": "Отправить",
 
+  "option-label-week-day": "День недели",
+  "option-label-modifier": "Размер",
   "option-modifier-any": "Любой размер",
   "option-week-day-any": "Любой день недели",
   "option-week-day-mon": "Пн",
@@ -26,5 +28,5 @@
   "option-week-day-thu": "Чт",
   "option-week-day-fri": "Пт",
   "option-week-day-sat": "Сб",
-  "option-week-day-san": "Вс"
+  "option-week-day-sun": "Вс"
 }
