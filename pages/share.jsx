@@ -10,7 +10,7 @@ import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
 import PlaceKindSelector from "../components/PlaceKindSelector";
 import CrowdLevelSlider from "../components/CrowdLevelSlider";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
-import { withTranslation } from "../utils/i18n";
+import { withTranslation } from "../i18n";
 
 const Share = ({ t }) => {
   const [placeKind, setPlaceKind] = useState("mini");

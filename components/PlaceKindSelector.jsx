@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import theme from "../utils/theme";
-import { withTranslation } from "../utils/i18n";
+import { withTranslation } from "../i18n";
 import PropTypes from "prop-types";
 
 const useClasses = makeStyles({

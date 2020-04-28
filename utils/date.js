@@ -1,4 +1,4 @@
-import nextI18Next from "./i18n";
+import nextI18Next from "../i18n";
 
 const lang = nextI18Next.i18n.language;
 

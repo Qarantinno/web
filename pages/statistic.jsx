@@ -11,7 +11,7 @@ import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
 import CrowdChart from "../components/CrowdChart";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
 import { WEEK_DAYS } from "../constants/WEEK_DAYS";
-import { withTranslation } from "../utils/i18n";
+import { withTranslation } from "../i18n";
 
 const Statistic = ({ t }) => {
   const [placeKind, setPlaceKind] = useState("any");

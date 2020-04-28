@@ -10,7 +10,7 @@ import CrowdChart from "../components/CrowdChart";
 import ShareCrowdLevelBtn from "../components/ShareCrowdLevelBtn";
 import CurrentStatusMsg from "../components/CurrentStatusMsg";
 import Layout from "../components/Layout";
-import { withTranslation } from "../utils/i18n";
+import { withTranslation } from "../i18n";
 
 export const Home = ({ t }) => (
   <Layout>
