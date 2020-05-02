@@ -1,6 +1,6 @@
 import MockAdapter from "axios-mock-adapter";
 
-import httpClient from "../utils/http-client";
+import { httpClient } from "../utils/httpClient";
 
 export function getPlaces() {
   const mock = new MockAdapter(httpClient);

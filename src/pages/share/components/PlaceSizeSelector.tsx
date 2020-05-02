@@ -7,7 +7,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-import theme from "../utils/theme";
+import { theme } from "../../../utils/theme";
+import { PlaceSizes } from '../../../enums/PlaceSizes';
 
 const useClasses = makeStyles({
   paper: {
@@ -24,18 +25,18 @@ const useClasses = makeStyles({
 });
 
 export interface IPlaceKindSelectorProps {
-  kinds: any[];
+  sizes: PlaceSizes[];
   selected: any;
   onChange: any;
 }
 
-export const PlaceKindSelector = ({ kinds, selected, onChange }: IPlaceKindSelectorProps) => {
+export const PlaceSizeSelector = ({ sizes, selected, onChange }: IPlaceKindSelectorProps) => {
   const [selectedKind, setSelectedKind] = useState(selected);
   const classes = useClasses();
   const { t } = useTranslation();
 
-  function handleKindChanged({ target }: ChangeEvent<{ value: string }>) {
-    const changed = kinds.find((kind) => kind === target.value);
+  function handleKindChanged({ target }: ChangeEvent<HTMLInputElement>) {
+    const changed = sizes.find((size) => size === target.value);
 
     if (changed) {
       onChange(changed);
@@ -45,28 +46,28 @@ export const PlaceKindSelector = ({ kinds, selected, onChange }: IPlaceKindSelec
 
   return (
     <Grid container direction="row" spacing={5}>
-      {kinds.map((kind) => (
-        <Grid item xs={4} key={kind}>
+      {sizes.map((size) => (
+        <Grid item xs={4} key={size}>
           <label>
             <input
               type="radio"
-              checked={selectedKind === kind.id}
+              checked={selectedKind === size}
               onChange={handleKindChanged}
-              value={kind.id}
+              value={size}
               hidden
             />
             <Paper
-              variant={kind === selectedKind ? "outlined" : "elevation"}
+              variant={size === selectedKind ? "outlined" : "elevation"}
               className={classes.paper}
               style={{
                 backgroundColor:
-                  kind === selectedKind
+                  size === selectedKind
                     ? theme.palette.background.default
                     : theme.palette.background.paper,
               }}
             >
               <Typography variant="overline">
-                {t(`option-modifier-${kind}`)}
+                {t(`option-modifier-${size}`)}
               </Typography>
             </Paper>
           </label>
@@ -77,4 +78,4 @@ export const PlaceKindSelector = ({ kinds, selected, onChange }: IPlaceKindSelec
 };
 
 
-export default PlaceKindSelector;
+export default PlaceSizeSelector;

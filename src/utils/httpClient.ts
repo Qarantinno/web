@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const instance = axios.create({
+export const httpClient = axios.create({
   baseURL: "/api/",
   timeout: 1000,
 });
-
-export default instance;

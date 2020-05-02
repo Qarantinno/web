@@ -1,20 +1,23 @@
 import React, { ChangeEvent, useState } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
 
-import Select from "@material-ui/core/Select";
+import Fab from '@material-ui/core/Fab';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
-import Layout from "../components/Layout";
-import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
-import CrowdChart from "../components/CrowdChart";
-import { PLACE_KINDS } from "../constants/PLACE_KINDS";
-import { WEEK_DAYS } from "../constants/WEEK_DAYS";
+import { Layout } from "../../components/Layout";
+import { CrowdChart } from "../../components/CrowdChart";
+import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
+import { WEEK_DAYS } from "../../constants/WEEK_DAYS";
 
-export const Statistic = () => {
+export const StatisticPage = () => {
   const [placeKind, setPlaceKind] = useState("any");
   const [weekDay, setWeekDay] = useState("any");
 
@@ -32,7 +35,11 @@ export const Statistic = () => {
     <Layout>
       <Grid container direction="column" spacing={5}>
         <Grid item>
-          <ReturnToMainPageBtn />
+          <Link to="/">
+            <Fab color="primary" aria-label="add" size="large">
+              <ArrowBack fontSize="large" />
+            </Fab>
+          </Link>
         </Grid>
         <Grid item>
           <FormControl fullWidth variant="outlined">
@@ -47,7 +54,7 @@ export const Statistic = () => {
               label={t("option-label-modifier")}
             >
               <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
-              {PLACE_KINDS.map((place) => (
+              {PLACE_SIZES.map((place) => (
                 <MenuItem key={place} value={place}>
                   {t(`option-modifier-${place}`)}
                 </MenuItem>
@@ -84,4 +91,4 @@ export const Statistic = () => {
   );
 };
 
-export default Statistic;
+export default StatisticPage;

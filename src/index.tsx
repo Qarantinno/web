@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './i18n';
 import * as serviceWorker from './serviceWorker';
 
-const Home = lazy(() => import('./pages/home'));
-const Share = lazy(() => import('./pages/share'));
-const Statistic = lazy(() => import('./pages/statistic'));
+const Home = lazy(() => import('./pages/home/HomePage'));
+const Share = lazy(() => import('./pages/share/SharePage'));
+const Statistic = lazy(() => import('./pages/statistic/StatisticPage'));
 
 ReactDOM.render(
   <Router>

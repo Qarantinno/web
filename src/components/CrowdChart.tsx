@@ -4,13 +4,7 @@ import Paper from "@material-ui/core/Paper";
 
 import { scaleBand } from "@devexpress/dx-chart-core";
 import { ArgumentScale, EventTracker, SeriesRef } from '@devexpress/dx-react-chart';
-import {
-  Chart,
-  BarSeries,
-  ArgumentAxis,
-  ValueAxis,
-  Tooltip,
-} from "@devexpress/dx-react-chart-material-ui";
+import { Chart, BarSeries, ArgumentAxis, ValueAxis, Tooltip } from "@devexpress/dx-react-chart-material-ui";
 
 const mockedData = [
   { time: "10", crowdLevel: 6.93 },

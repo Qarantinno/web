@@ -1,6 +1,18 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { enUS } from "@material-ui/core/locale";
+import { enUS, ruRU } from "@material-ui/core/locale";
 
-export const theme = createMuiTheme({}, enUS);
+import i18next from "i18next";
 
-export default theme;
+let lang;
+
+switch (i18next.language) {
+  case 'en':
+    lang = enUS;
+    break;
+  case 'ru':
+  default:
+    lang = ruRU;
+    break;
+}
+
+export const theme = createMuiTheme({}, lang);
