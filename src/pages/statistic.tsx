@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
 
 import Select from "@material-ui/core/Select";
 import Grid from "@material-ui/core/Grid";
@@ -11,18 +13,19 @@ import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
 import CrowdChart from "../components/CrowdChart";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
 import { WEEK_DAYS } from "../constants/WEEK_DAYS";
-import { withTranslation } from "../i18n";
 
-const Statistic = ({ t }) => {
+export const Statistic = () => {
   const [placeKind, setPlaceKind] = useState("any");
   const [weekDay, setWeekDay] = useState("any");
 
-  function handlePlaceKindChanged({ target }) {
-    setPlaceKind(target.value);
+  const { t } = useTranslation();
+
+  function handlePlaceKindChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+    setPlaceKind(target.value as string);
   }
 
-  function handleWeekDayChanged({ target }) {
-    setWeekDay(target.value);
+  function handleWeekDayChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+    setWeekDay(target.value as string);
   }
 
   return (
@@ -81,8 +84,4 @@ const Statistic = ({ t }) => {
   );
 };
 
-Statistic.getInitialProps = async () => ({
-  namespacesRequired: ["common"],
-});
-
-export default withTranslation("common")(Statistic);
+export default Statistic;

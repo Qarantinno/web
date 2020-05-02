@@ -6,7 +6,11 @@ import CheckIcon from "@material-ui/icons/Check";
 
 import { date } from "../utils/date";
 
-export const CurrentStatusMsg = ({ text }) => {
+export interface ICurrentStatusMsgProps {
+  text: string;
+}
+
+export const CurrentStatusMsg = ({ text }: ICurrentStatusMsgProps) => {
   const initialDate = date();
   const [time, setTime] = useState(initialDate);
 

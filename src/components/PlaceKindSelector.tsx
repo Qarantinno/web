@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Paper from "@material-ui/core/Paper";
@@ -6,8 +8,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import theme from "../utils/theme";
-import { withTranslation } from "../i18n";
-import PropTypes from "prop-types";
 
 const useClasses = makeStyles({
   paper: {
@@ -23,11 +23,18 @@ const useClasses = makeStyles({
   },
 });
 
-const PlaceKindSelector = ({ t, kinds, selected, onChange }) => {
+export interface IPlaceKindSelectorProps {
+  kinds: any[];
+  selected: any;
+  onChange: any;
+}
+
+export const PlaceKindSelector = ({ kinds, selected, onChange }: IPlaceKindSelectorProps) => {
   const [selectedKind, setSelectedKind] = useState(selected);
   const classes = useClasses();
+  const { t } = useTranslation();
 
-  function handleKindChanged({ target }) {
+  function handleKindChanged({ target }: ChangeEvent<{ value: string }>) {
     const changed = kinds.find((kind) => kind === target.value);
 
     if (changed) {
@@ -69,11 +76,5 @@ const PlaceKindSelector = ({ t, kinds, selected, onChange }) => {
   );
 };
 
-PlaceKindSelector.propTypes = {
-  selected: PropTypes.string.isRequired,
-  kinds: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
-};
 
-export default withTranslation("common")(PlaceKindSelector);
+export default PlaceKindSelector;

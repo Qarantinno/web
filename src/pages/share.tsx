@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+
+import { useTranslation } from 'react-i18next';
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -10,17 +11,18 @@ import ReturnToMainPageBtn from "../components/ReturnToMainPageBtn";
 import PlaceKindSelector from "../components/PlaceKindSelector";
 import CrowdLevelSlider from "../components/CrowdLevelSlider";
 import { PLACE_KINDS } from "../constants/PLACE_KINDS";
-import { withTranslation } from "../i18n";
 
-const Share = ({ t }) => {
-  const [placeKind, setPlaceKind] = useState("mini");
-  const [crowdLevel, setCrowdLevel] = useState(50);
+export const Share = () => {
+  const [placeKind, setPlaceKind] = useState<string>("mini");
+  const [crowdLevel, setCrowdLevel] = useState<number>(50);
 
-  function handlePlaceKindChanged(kind) {
+  const { t } = useTranslation();
+
+  function handlePlaceKindChanged(kind: string) {
     setPlaceKind(kind);
   }
 
-  function handleCrowdLevelChanged(level) {
+  function handleCrowdLevelChanged(level: number) {
     setCrowdLevel(level);
   }
 
@@ -55,12 +57,4 @@ const Share = ({ t }) => {
   );
 };
 
-Share.getInitialProps = async () => ({
-  namespacesRequired: ["common"],
-});
-
-Share.propTypes = {
-  t: PropTypes.func.isRequired,
-};
-
-export default withTranslation("common")(Share);
+export default Share;
