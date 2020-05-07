@@ -39,7 +39,7 @@ export const Status = ({ status }: IStatusProps) => {
         >
           {time}
         </Typography>
-        <Typography align="center">{t("status-perfect")}</Typography>
+        <Typography align="center">{t(`status-${status}`)}</Typography>
       </Grid>
     </Grid>
   );

@@ -25,7 +25,7 @@ export const HomePage = () => {
 
   useInterval(() => {
     getStatus().then(({ data }) => setStatus(data.status));
-  }, 3000);
+  }, 12000);
   
   return status ? (
     <Layout>

@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './i18n';
 import * as serviceWorker from './serviceWorker';
@@ -11,7 +13,11 @@ const Statistic = lazy(() => import('./pages/statistic/StatisticPage'));
 
 ReactDOM.render(
   <Router>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <Backdrop open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    }>
       <Route exact path="/" component={Home} />
       <Route path="/share" component={Share} />
       <Route path="/statistic" component={Statistic} />
