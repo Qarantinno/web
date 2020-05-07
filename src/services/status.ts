@@ -9,7 +9,7 @@ export interface IGetStatusResponse {
 }
 
 export function getStatus(): Promise<AxiosResponse<IGetStatusResponse>> {
-  const mock = new MockAdapter(httpClient, { delayResponse: 1500 });
+  const mock = new MockAdapter(httpClient, { delayResponse: 300 });
 
   const statuses = [
     Statuses.PERFECT,
