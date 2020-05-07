@@ -1,46 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
-import { date } from "../../../utils/date";
+import { date } from '../../../utils/date';
 import { Statuses } from '../../../enums/Statuses';
 
 import { Emoji } from './Emoji';
 import { STATUS_TO_EMOJI } from '../../../constants/STATUS_TO_EMOJI';
 
 export interface IStatusProps {
-  status: Statuses;
+  status: Statuses | undefined;
 }
 
 export const Status = ({ status }: IStatusProps) => {
+  if (!status) status = Statuses.PERFECT;
+
   const initialDate = date();
   const [time, setTime] = useState(initialDate);
   const { t } = useTranslation();
 
-  function handleClick() {
-    const newDate = date();
-    setTime(newDate);
-  }
-  
-  const symbol = STATUS_TO_EMOJI[status] || '🤷‍♂️';
+  useEffect(() => setTime(date()), [status])
+
+  const symbol = status ? STATUS_TO_EMOJI[status] : '🤷‍♂️';
 
   return (
     <Grid container alignItems="center" direction="column">
       <Grid item>
-        <Box fontSize="large">
-          <Emoji label={status} symbol={symbol} />
-        </Box>
+        <Emoji label={status} symbol={symbol} />
       </Grid>
       <Grid item>
         <Typography
           display="block"
           variant="overline"
           align="center"
-          onClick={handleClick}
         >
           {time}
         </Typography>

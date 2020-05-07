@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
@@ -12,18 +12,26 @@ import Link from '@material-ui/core/Link';
 
 import { CrowdChart } from '../../components/CrowdChart';
 import { Layout } from '../../components/Layout';
-import { Statuses } from '../../enums/Statuses';
 
+import { Statuses } from '../../enums/Statuses';
 import { Status } from './components/Status';
+import { HomePageSkeleton } from './components/HomePageSkeleton';
+import { getStatus } from '../../services/status';
+import { useInterval } from '../../utils/useInterval';
 
 export const HomePage = () => {
+  const [status, setStatus] = useState<Statuses>();
   const { t } = useTranslation();
+
+  useInterval(() => {
+    getStatus().then(({ data }) => setStatus(data.status));
+  }, 3000);
   
-  return (
+  return status ? (
     <Layout>
       <Grid container direction="column" spacing={5}>
         <Grid item>
-          <Status status={Statuses.GOOD}/>
+          <Status status={status} />
         </Grid>
         <Grid item>
           <Grid container direction="column" alignItems="center" spacing={5}>
@@ -55,7 +63,7 @@ export const HomePage = () => {
         </Grid>
       </Grid>
     </Layout>
-  );
+  ) : <HomePageSkeleton />;
 }
 
 export default HomePage;

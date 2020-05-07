@@ -1,5 +1,6 @@
 export enum Statuses {
-  GOOD = 'good',
-  NORMAL = 'normal',
-  BAD = 'bad',
+  PERFECT = 'perfect',
+  NICE = 'nice',
+  NOT_THE_BEST = 'not the best',
+  STAY_AT_HOME = 'stay at home',
 }
