@@ -75,22 +75,6 @@ export function getStatusFromStats(hours: IHourStats[]): Statuses {
   return getStatusFromCountOfPeople(countOfPeople);
 }
 
-export function getChartDataFromStats(hours: IHourStats[], interval?: IInterval): IHourStats[] {
-  if (interval) {
-    const from = new Date();
-    from.setHours(from.getHours() + interval.from);
-    const to = new Date();
-    to.setHours(to.getHours() + interval.to);
-
-    return hours.filter(item => {
-      const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
-      return hour >= from.getHours() && hour <= to.getHours();
-    });
-  }
-
-  return hours;
-}
-
 export function getStatusFromCountOfPeople(value: number | undefined) {
   if (value === undefined) return Statuses.UNDEFINED;
 
