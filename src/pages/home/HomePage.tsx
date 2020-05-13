@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
@@ -15,19 +15,23 @@ import { Layout } from '../../components/Layout';
 
 import { Statuses } from '../../enums/Statuses';
 import { Status } from './components/Status';
-import { HomePageSkeleton } from './components/HomePageSkeleton';
-import { getStatus } from '../../services/status';
+import { getRelativeStats, getStatusFromStats, IHourStats } from '../../services/status';
 import { useInterval } from '../../utils/useInterval';
 
 export const HomePage = () => {
+  const [stats, setStats] = useState<IHourStats[]>([]);
   const [status, setStatus] = useState<Statuses>();
   const { t } = useTranslation();
 
   useInterval(() => {
-    getStatus().then(({ data }) => setStatus(data.status));
-  }, 12000);
+    getRelativeStats({ from: -2, to: 3 }).then(setStats);
+  }, 60000);
   
-  return status ? (
+  useEffect(() => {
+    setStatus(getStatusFromStats(stats));
+  }, [stats]);
+  
+  return (
     <Layout>
       <Grid container direction="column" spacing={5}>
         <Grid item>
@@ -36,7 +40,7 @@ export const HomePage = () => {
         <Grid item>
           <Grid container direction="column" alignItems="center" spacing={5}>
             <Grid item style={{ width: "100%" }}>
-              <CrowdChart />
+              <CrowdChart data={stats} />
             </Grid>
             <Grid item>
               <Link component={RouterLink} to="/statistic" underline="none">
@@ -63,7 +67,7 @@ export const HomePage = () => {
         </Grid>
       </Grid>
     </Layout>
-  ) : <HomePageSkeleton />;
+  );
 }
 
 export default HomePage;

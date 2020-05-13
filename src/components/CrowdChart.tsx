@@ -1,40 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from 'react';
 
-import Paper from "@material-ui/core/Paper";
+import Chart from "chart.js";
 
-import { scaleBand } from "@devexpress/dx-chart-core";
-import { ArgumentScale, EventTracker, SeriesRef } from '@devexpress/dx-react-chart';
-import { Chart, BarSeries, ArgumentAxis, ValueAxis, Tooltip } from "@devexpress/dx-react-chart-material-ui";
+import { getStatusFromCountOfPeople, IHourStats } from '../services/status';
+import { theme } from '../utils/theme';
+import { Statuses } from '../enums/Statuses';
 
-const mockedData = [
-  { time: "10", crowdLevel: 6.93 },
-  { time: "11", crowdLevel: 3.018 },
-  { time: "12", crowdLevel: 2.525 },
-  { time: "13", crowdLevel: 4.44 },
-  { time: "14", crowdLevel: 3.682 },
-];
 
-export const CrowdChart = () => {
-  const [targetItem, setTargetItem] = useState<SeriesRef>();
-  
-  function handleTargetItemChanged(target: SeriesRef) {
-    setTargetItem(target)
-  }
+export interface ICrowdChartProps {
+  data?: IHourStats[];
+}
 
-  return (
-    <Paper>
-      <Chart data={mockedData}>
-        <ArgumentScale factory={scaleBand} />
-        <ArgumentAxis />
-        <ValueAxis />
+export const CrowdChart = ({ data }: ICrowdChartProps) => {
+  const canvasElement = useRef(null);
 
-        <BarSeries valueField="crowdLevel" argumentField="time" />
+  useEffect(() => {
+    const ctx = canvasElement.current;
 
-        <EventTracker />
-        <Tooltip targetItem={targetItem} onTargetItemChange={handleTargetItemChanged} />
-      </Chart>
-    </Paper>
-  );
+    if (ctx && data) {
+      new Chart(ctx, {
+        type: 'bar',
+        options: {
+          legend: {
+            display: false
+          }
+        },
+        data: {
+          labels: data.map(item => item.name),
+          datasets: [{
+            data: data.map(item => item.value),
+            backgroundColor: ({ dataIndex}) => {
+              if (!dataIndex) return theme.palette.info.main;
+              const value = data[dataIndex].value;
+
+              switch (getStatusFromCountOfPeople(value)) {
+                case Statuses.PERFECT:
+                  return theme.palette.success.main;
+                case Statuses.NICE:
+                  return theme.palette.info.main;
+                case Statuses.NOT_BEST:
+                  return theme.palette.warning.main;
+                case Statuses.NO_WAY:
+                  return theme.palette.error.main;
+                default:
+                  return theme.palette.info.main;
+              }
+            }
+          }],
+        }
+      });
+    }
+  }, [canvasElement, data])
+
+  return <canvas ref={canvasElement} />;
 };
 
 export default CrowdChart;

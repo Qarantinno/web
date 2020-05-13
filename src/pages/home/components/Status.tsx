@@ -24,7 +24,7 @@ export const Status = ({ status }: IStatusProps) => {
 
   useEffect(() => setTime(date()), [status])
 
-  const symbol = status ? STATUS_TO_EMOJI[status] : '🤷‍♂️';
+  const symbol = STATUS_TO_EMOJI[status];
 
   return (
     <Grid container alignItems="center" direction="column">
