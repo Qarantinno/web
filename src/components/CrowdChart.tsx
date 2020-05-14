@@ -6,7 +6,6 @@ import { getStatusFromCountOfPeople, IHourStats } from '../services/status';
 import { theme } from '../utils/theme';
 import { Statuses } from '../enums/Statuses';
 
-
 export interface ICrowdChartProps {
   data?: IHourStats[];
 }
@@ -21,6 +20,9 @@ export const CrowdChart = ({ data }: ICrowdChartProps) => {
       new Chart(ctx, {
         type: 'bar',
         options: {
+          tooltips: {
+            cornerRadius: 2
+          },
           legend: {
             display: false
           }

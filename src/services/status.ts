@@ -67,10 +67,11 @@ export function getRelativeStats(interval?: IInterval): Promise<IHourStats[]> {
 }
 
 export function getStatusFromStats(hours: IHourStats[]): Statuses {
-  const time = new Date();
-  time.setMinutes(time.getMinutes() + 20);
-
-  const countOfPeople = hours.find(hour => hour.name === `${time.getHours()}:00`)?.value;
+  const time = dayjs().add(20, 'minute');
+  const countOfPeople = hours.find(item => {
+    const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
+    return hour === time.hour();
+  })?.value;
 
   return getStatusFromCountOfPeople(countOfPeople);
 }

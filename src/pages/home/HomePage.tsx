@@ -3,7 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
 
-import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -11,10 +12,9 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
 import { CrowdChart } from '../../components/CrowdChart';
-import { Layout } from '../../components/Layout';
+import { Status } from './components/Status';
 
 import { Statuses } from '../../enums/Statuses';
-import { Status } from './components/Status';
 import { getRelativeStats, getStatusFromStats, IHourStats } from '../../services/status';
 import { useInterval } from '../../utils/useInterval';
 
@@ -32,41 +32,39 @@ export const HomePage = () => {
   }, [stats]);
   
   return (
-    <Layout>
-      <Grid container direction="column" spacing={5}>
-        <Grid item>
+    <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 2fr 0.6fr">
+      <Container>
+        <Box pt={2}>
           <Status status={status} />
-        </Grid>
-        <Grid item>
-          <Grid container direction="column" alignItems="center" spacing={5}>
-            <Grid item style={{ width: "100%" }}>
-              <CrowdChart data={stats} />
-            </Grid>
-            <Grid item>
-              <Link component={RouterLink} to="/statistic" underline="none">
-                <Button variant="contained" color="default">
-                  {t("btn-label-discover")}
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container justify="center" alignItems="center" spacing={2}>
-            <Grid item>
-              <Typography>{t("msg-do-share")}</Typography>
-            </Grid>
-            <Grid item>
-              <Link component={RouterLink} to="/share" underline="none">
-                <Fab color="primary" aria-label="add" size="large">
-                  <AddIcon fontSize="large" />
-                </Fab>
-              </Link>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Layout>
+        </Box>
+      </Container>
+      <Container>
+        <Box height={1}>
+          <Box p={1}>
+            <CrowdChart data={stats} />
+          </Box>
+          <Box p={1} textAlign="center">
+            <Link component={RouterLink} to="/statistic" underline="none">
+              <Button variant="contained" color="default">
+                {t("btn-label-discover")}
+              </Button>
+            </Link>
+          </Box>
+        </Box>
+      </Container>
+      <Container>
+        <Box p={1} textAlign="center">
+          <Typography>{t("msg-do-share")}</Typography>
+        </Box>
+        <Box p={1} textAlign="center">
+          <Link component={RouterLink} to="/share" underline="none">
+            <Fab color="primary" aria-label="add" size="large">
+              <AddIcon fontSize="large" />
+            </Fab>
+          </Link>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 

@@ -1,14 +1,9 @@
 import React, { ReactNode } from 'react';
 
-import Container from "@material-ui/core/Container";
-import { ThemeProvider } from "@material-ui/core/styles";
-
-import { theme } from "../utils/theme";
+import Box from "@material-ui/core/Box";
 
 export const Layout = ({ children }: { children: ReactNode }) => (
-  <ThemeProvider theme={theme}>
-    <Container>{children}</Container>
-  </ThemeProvider>
+  <Box height={1}>{children}</Box>
 );
 
 export default Layout;
