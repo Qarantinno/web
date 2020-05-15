@@ -11,7 +11,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
 
 import { CrowdChart } from "../../components/CrowdChart";
 import { Layout } from '../../components/Layout';
@@ -47,63 +46,59 @@ export const StatisticPage = () => {
   return (
     <Layout>
       <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 0.7fr 1.1fr">
-      <Container>
         <Link to="/">
           <Fab color="primary" aria-label="add" size="large">
             <ArrowBack fontSize="large" />
           </Fab>
         </Link>
-      </Container>
-      <Container>
-        <Box pt={2} pb={2}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel id="place-kind-label">
-              {t("option-label-modifier")}
-            </InputLabel>
-            <Select
-              id="place-kind"
-              labelId="place-kind-label"
-              onChange={handlePlaceKindChanged}
-              value={placeKind}
-              label={t("option-label-modifier")}
-            >
-              <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
-              {PLACE_SIZES.map((place) => (
-                <MenuItem key={place} value={place}>
-                  {t(`option-modifier-${place}`)}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Box>
+          <Box pt={2} pb={2}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="place-kind-label">
+                {t("option-label-modifier")}
+              </InputLabel>
+              <Select
+                id="place-kind"
+                labelId="place-kind-label"
+                onChange={handlePlaceKindChanged}
+                value={placeKind}
+                label={t("option-label-modifier")}
+              >
+                <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
+                {PLACE_SIZES.map((place) => (
+                  <MenuItem key={place} value={place}>
+                    {t(`option-modifier-${place}`)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box pt={2} pb={2}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="week-day-label">
+                {t("option-label-week-day")}
+              </InputLabel>
+              <Select
+                id="week-day"
+                labelId="week-day-label"
+                onChange={handleWeekDayChanged}
+                value={weekDay}
+                label={t("option-label-week-day")}
+              >
+                <MenuItem value="any">{t("option-week-day-any")}</MenuItem>
+                {WEEK_DAYS.map((weekDay) => (
+                  <MenuItem key={weekDay} value={weekDay}>
+                    {t(`option-week-day-${weekDay}`)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
-        <Box pt={2} pb={2}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel id="week-day-label">
-              {t("option-label-week-day")}
-            </InputLabel>
-            <Select
-              id="week-day"
-              labelId="week-day-label"
-              onChange={handleWeekDayChanged}
-              value={weekDay}
-              label={t("option-label-week-day")}
-            >
-              <MenuItem value="any">{t("option-week-day-any")}</MenuItem>
-              {WEEK_DAYS.map((weekDay) => (
-                <MenuItem key={weekDay} value={weekDay}>
-                  {t(`option-week-day-${weekDay}`)}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Container>
-      <Container>
         <Box height={1}>
           <CrowdChart data={stats} zoom drag />
         </Box>
-      </Container>
-    </Box>
+      </Box>
     </Layout>
   );
 };

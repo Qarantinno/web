@@ -4,7 +4,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -35,35 +34,29 @@ export const HomePage = () => {
   return (
     <Layout>
       <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 2fr 0.6fr">
-        <Container>
-          <Status status={status} />
-        </Container>
-        <Container>
-          <Box height={1}>
-            <Box p={1}>
-              <CrowdChart data={stats} />
-            </Box>
-            <Box p={1} textAlign="center">
-              <Link component={RouterLink} to="/statistic" underline="none">
-                <Button variant="contained" color="default">
-                  {t("btn-label-discover")}
-                </Button>
-              </Link>
-            </Box>
-          </Box>
-        </Container>
-        <Container>
-          <Box p={1} textAlign="center">
-            <Typography>{t("msg-do-share")}</Typography>
+        <Status status={status} />
+        <Box height={1}>
+          <Box p={1}>
+            <CrowdChart data={stats} />
           </Box>
           <Box p={1} textAlign="center">
-            <Link component={RouterLink} to="/share" underline="none">
-              <Fab color="primary" aria-label="add" size="large">
-                <AddIcon fontSize="large" />
-              </Fab>
+            <Link component={RouterLink} to="/statistic" underline="none">
+              <Button variant="contained" color="default">
+                {t("btn-label-discover")}
+              </Button>
             </Link>
           </Box>
-        </Container>
+        </Box>
+        <Box p={1} textAlign="center">
+          <Box p={2}>
+            <Typography>{t("msg-do-share")}</Typography>
+          </Box>
+          <Link component={RouterLink} to="/share" underline="none">
+            <Fab color="primary" aria-label="add" size="large">
+              <AddIcon fontSize="large" />
+            </Fab>
+          </Link>
+        </Box>
       </Box>
     </Layout>
   );
