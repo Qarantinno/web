@@ -1,16 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 
 import Chart from "chart.js";
+import "chartjs-plugin-zoom";
 
 import { getStatusFromCountOfPeople, IHourStats } from '../services/status';
 import { theme } from '../utils/theme';
 import { Statuses } from '../enums/Statuses';
 
 export interface ICrowdChartProps {
-  data?: IHourStats[];
+  data: IHourStats[];
+  zoom?: boolean;
+  drag?: boolean;
 }
 
-export const CrowdChart = ({ data }: ICrowdChartProps) => {
+export const CrowdChart = ({ data, zoom, drag }: ICrowdChartProps) => {
   const canvasElement = useRef(null);
 
   useEffect(() => {
@@ -20,11 +23,28 @@ export const CrowdChart = ({ data }: ICrowdChartProps) => {
       new Chart(ctx, {
         type: 'bar',
         options: {
+          responsive: true,
           tooltips: {
             cornerRadius: 2
           },
           legend: {
             display: false
+          },
+          plugins: {
+            zoom: {
+              sensitivity: 1,
+              pan: {
+                enabled: drag,
+                mode: 'x'
+              },
+              zoom: {
+                rangeMax: {
+                  x: 5,
+                },
+                enabled: zoom,
+                mode: 'x',
+              }
+            }
           }
         },
         data: {
@@ -52,7 +72,7 @@ export const CrowdChart = ({ data }: ICrowdChartProps) => {
         }
       });
     }
-  }, [canvasElement, data])
+  }, [canvasElement, data, drag, zoom])
 
   return <canvas ref={canvasElement} />;
 };

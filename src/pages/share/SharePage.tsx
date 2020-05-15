@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -7,15 +7,16 @@ import { useTranslation } from 'react-i18next';
 import Fab from '@material-ui/core/Fab';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
-import { Layout } from '../../components/Layout';
 import { CrowdLevelSlider } from '../statistic/components/CrowdLevelSlider';
 import { PLACE_SIZES } from '../../constants/PLACE_SIZES';
 import { PlaceSizes } from '../../enums/PlaceSizes';
-
-import { PlaceSizeSelector } from './components/PlaceSizeSelector';
 
 export const SharePage = () => {
   const [placeKind, setPlaceKind] = useState<PlaceSizes>(PlaceSizes.MINI);
@@ -23,46 +24,63 @@ export const SharePage = () => {
 
   const { t } = useTranslation();
 
-  function handlePlaceKindChanged(kind: PlaceSizes) {
-    setPlaceKind(kind);
+  function handlePlaceKindChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+    setPlaceKind(target.value as PlaceSizes);
   }
+
 
   function handleCrowdLevelChanged(level: number) {
     setCrowdLevel(level);
   }
 
   return (
-    <Layout>
-      <Grid container direction="column" spacing={5}>
-        <Grid item>
+    <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="1fr 1fr 1fr 1fr">
+      <Container>
+        <Box pt={2}>
           <Link to="/">
             <Fab color="primary" aria-label="add" size="large">
               <ArrowBack fontSize="large" />
             </Fab>
           </Link>
-        </Grid>
-        <Grid item>
-          <PlaceSizeSelector
-            sizes={PLACE_SIZES}
-            selected={placeKind}
+        </Box>
+      </Container>
+      <Container>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel id="place-kind-label">
+            {t("option-label-modifier")}
+          </InputLabel>
+          <Select
+            id="place-kind"
+            labelId="place-kind-label"
             onChange={handlePlaceKindChanged}
-          />
-        </Grid>
-        <Grid item>
+            value={placeKind}
+            label={t("option-label-modifier")}
+          >
+            <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
+            {PLACE_SIZES.map((place) => (
+              <MenuItem key={place} value={place}>
+                {t(`option-modifier-${place}`)}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Container>
+      <Container>
+        <Box p={3}>
           <CrowdLevelSlider
             value={crowdLevel}
             onChange={handleCrowdLevelChanged}
           />
-        </Grid>
-        <Grid item>
-          <Box justifyContent="center" display="flex">
-            <Button size="large" variant="contained" color="primary">
-              {t("btn-label-post")}
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </Layout>
+        </Box>
+      </Container>
+      <Container>
+        <Box textAlign="center">
+          <Button size="large" variant="contained" color="primary">
+            {t("btn-label-post")}
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

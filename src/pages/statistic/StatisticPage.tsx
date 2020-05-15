@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -6,22 +6,33 @@ import { useTranslation } from 'react-i18next';
 
 import Fab from '@material-ui/core/Fab';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 
-import { Layout } from "../../components/Layout";
 import { CrowdChart } from "../../components/CrowdChart";
 import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
 import { WEEK_DAYS } from "../../constants/WEEK_DAYS";
+import { getStats, IHourStats } from '../../services/status';
 
 export const StatisticPage = () => {
+  const [stats, setStats] = useState<IHourStats[]>([]);
   const [placeKind, setPlaceKind] = useState("any");
   const [weekDay, setWeekDay] = useState("any");
 
   const { t } = useTranslation();
+  
+  useEffect(() => {
+    getStats({
+      placeModifier: placeKind,
+      weekDay: weekDay,
+    }).then(({ data }) => {
+      setStats(data.hours);
+    });
+  }, [placeKind, weekDay]);
 
   function handlePlaceKindChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
     setPlaceKind(target.value as string);
@@ -32,16 +43,18 @@ export const StatisticPage = () => {
   }
 
   return (
-    <Layout>
-      <Grid container direction="column" spacing={5}>
-        <Grid item>
+    <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 0.7fr 1.1fr">
+      <Container>
+        <Box pt={2}>
           <Link to="/">
             <Fab color="primary" aria-label="add" size="large">
               <ArrowBack fontSize="large" />
             </Fab>
           </Link>
-        </Grid>
-        <Grid item>
+        </Box>
+      </Container>
+      <Container>
+        <Box pt={2} pb={2}>
           <FormControl fullWidth variant="outlined">
             <InputLabel id="place-kind-label">
               {t("option-label-modifier")}
@@ -61,8 +74,8 @@ export const StatisticPage = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box pt={2} pb={2}>
           <FormControl fullWidth variant="outlined">
             <InputLabel id="week-day-label">
               {t("option-label-week-day")}
@@ -82,12 +95,16 @@ export const StatisticPage = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item>
-          <CrowdChart />
-        </Grid>
-      </Grid>
-    </Layout>
+        </Box>
+      </Container>
+      <Container>
+        <Box height={1}>
+          <Box p={1}>
+            <CrowdChart data={stats} zoom drag />
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
