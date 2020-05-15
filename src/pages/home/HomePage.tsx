@@ -34,7 +34,9 @@ export const HomePage = () => {
   return (
     <Layout>
       <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 2fr 0.6fr">
-        <Status status={status} />
+        <Box pt={2}>
+          <Status status={status} />
+        </Box>
         <Box height={1}>
           <Box p={1}>
             <CrowdChart data={stats} />

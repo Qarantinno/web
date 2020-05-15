@@ -1,14 +1,11 @@
 /// <reference types="react-scripts" />
 
-declare module 'react-full-height' {
+declare module 'react-div-100vh' {
   import { ReactNode } from 'react';
 
-  function FullHeightComp(props?: {
+  function FullHeight(props?: {
     children: ReactNode;
-    className: string;
-    startWidth?: number;
-    endWidth?: number;
-    canExceed?: boolean;
+    style?: any;
   }): JSX.Element;
-  export default FullHeightComp;
+  export default FullHeight;
 }
