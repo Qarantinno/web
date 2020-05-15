@@ -13,12 +13,17 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { CrowdLevelSlider } from '../statistic/components/CrowdLevelSlider';
+import { Layout } from '../../components/Layout';
+import { CrowdLevelSlider } from './components/CrowdLevelSlider';
+
 import { PLACE_SIZES } from '../../constants/PLACE_SIZES';
 import { PlaceSizes } from '../../enums/PlaceSizes';
+import { postShots } from '../../services/shots';
 
 export const SharePage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [placeKind, setPlaceKind] = useState<PlaceSizes>(PlaceSizes.MINI);
   const [crowdLevel, setCrowdLevel] = useState<number>(50);
 
@@ -28,59 +33,69 @@ export const SharePage = () => {
     setPlaceKind(target.value as PlaceSizes);
   }
 
-
   function handleCrowdLevelChanged(level: number) {
     setCrowdLevel(level);
   }
 
+  function shareTheCrowdInfo() {
+    setLoading(true);
+
+    postShots({
+      people: crowdLevel,
+      place: { modifier: placeKind }
+    }).finally(() => {
+      setLoading(false);
+    });
+  }
+
   return (
-    <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="1fr 1fr 1fr 1fr">
-      <Container>
-        <Box pt={2}>
+    <Layout>
+      <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="1fr 1fr 1fr 1fr">
+        <Container>
           <Link to="/">
             <Fab color="primary" aria-label="add" size="large">
               <ArrowBack fontSize="large" />
             </Fab>
           </Link>
-        </Box>
-      </Container>
-      <Container>
-        <FormControl fullWidth variant="outlined">
-          <InputLabel id="place-kind-label">
-            {t("option-label-modifier")}
-          </InputLabel>
-          <Select
-            id="place-kind"
-            labelId="place-kind-label"
-            onChange={handlePlaceKindChanged}
-            value={placeKind}
-            label={t("option-label-modifier")}
-          >
-            <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
-            {PLACE_SIZES.map((place) => (
-              <MenuItem key={place} value={place}>
-                {t(`option-modifier-${place}`)}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Container>
-      <Container>
-        <Box p={3}>
-          <CrowdLevelSlider
-            value={crowdLevel}
-            onChange={handleCrowdLevelChanged}
-          />
-        </Box>
-      </Container>
-      <Container>
-        <Box textAlign="center">
-          <Button size="large" variant="contained" color="primary">
-            {t("btn-label-post")}
-          </Button>
-        </Box>
-      </Container>
-    </Box>
+        </Container>
+        <Container>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="place-kind-label">
+              {t("option-label-modifier")}
+            </InputLabel>
+            <Select
+              id="place-kind"
+              labelId="place-kind-label"
+              onChange={handlePlaceKindChanged}
+              value={placeKind}
+              label={t("option-label-modifier")}
+            >
+              <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
+              {PLACE_SIZES.map((place) => (
+                <MenuItem key={place} value={place}>
+                  {t(`option-modifier-${place}`)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Container>
+        <Container>
+          <Box p={3}>
+            <CrowdLevelSlider
+              value={crowdLevel}
+              onChange={handleCrowdLevelChanged}
+            />
+          </Box>
+        </Container>
+        <Container>
+          <Box textAlign="center">
+            <Button size="large" variant="contained" color="primary" onClick={shareTheCrowdInfo}>
+              {loading ? <CircularProgress color="inherit" size={26} /> : t("btn-label-post")}
+            </Button>
+          </Box>
+        </Container>
+      </Box>
+    </Layout>
   );
 };
 

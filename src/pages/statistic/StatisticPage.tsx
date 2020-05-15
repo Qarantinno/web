@@ -14,6 +14,8 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 
 import { CrowdChart } from "../../components/CrowdChart";
+import { Layout } from '../../components/Layout';
+
 import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
 import { WEEK_DAYS } from "../../constants/WEEK_DAYS";
 import { getStats, IHourStats } from '../../services/status';
@@ -43,15 +45,14 @@ export const StatisticPage = () => {
   }
 
   return (
-    <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 0.7fr 1.1fr">
+    <Layout>
+      <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 0.7fr 1.1fr">
       <Container>
-        <Box pt={2}>
-          <Link to="/">
-            <Fab color="primary" aria-label="add" size="large">
-              <ArrowBack fontSize="large" />
-            </Fab>
-          </Link>
-        </Box>
+        <Link to="/">
+          <Fab color="primary" aria-label="add" size="large">
+            <ArrowBack fontSize="large" />
+          </Fab>
+        </Link>
       </Container>
       <Container>
         <Box pt={2} pb={2}>
@@ -99,12 +100,11 @@ export const StatisticPage = () => {
       </Container>
       <Container>
         <Box height={1}>
-          <Box p={1}>
-            <CrowdChart data={stats} zoom drag />
-          </Box>
+          <CrowdChart data={stats} zoom drag />
         </Box>
       </Container>
     </Box>
+    </Layout>
   );
 };
 

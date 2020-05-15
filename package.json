@@ -26,6 +26,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-full-height": "^1.2.1",
     "react-i18next": "^11.4.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",

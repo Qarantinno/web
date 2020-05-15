@@ -1,9 +1,24 @@
 import React, { ReactNode } from 'react';
 
-import Box from "@material-ui/core/Box";
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
-export const Layout = ({ children }: { children: ReactNode }) => (
-  <Box height={1}>{children}</Box>
-);
+import FullHeight from 'react-full-height';
+
+const useClasses = makeStyles({
+  layout: {
+    paddingTop: 20,
+    paddingBottom: 20
+  },
+});
+
+export const Layout = ({ children }: { children: ReactNode }) => {
+  const classes = useClasses();
+
+  return (
+    <FullHeight className={classes.layout} canExceed={false}>
+      {children}
+    </FullHeight>
+  );
+}
 
 export default Layout;
