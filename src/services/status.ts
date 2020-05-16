@@ -78,23 +78,17 @@ export function getRelativeStats(params?: IGetRelativeStatsParams): Promise<IHou
     .then(all => all.reduce<IHourStats[]>((result, item, index) => {
       if (index === 0) {
         return [
-          ...item.data.hours.filter(item => {
-            const [ hour ] = item.name.split(':').map(unit => Number.parseInt(unit));
-
-            return all.length === 1 
-              ? hour >= from.hour() && hour <= to.hour()
-              : hour >= from.hour();
-          }),
+          ...item.data.hours.filter(({ date }) => all.length === 1
+            ? from.isBefore(date) && to.isAfter(date)
+            : from.isBefore(date)
+          ),
         ];
       }
 
       if (index === all.length - 1) {
         return [
           ...result,
-          ...item.data.hours.filter(item => {
-            const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
-            return hour <= to.hour();
-          }),
+          ...item.data.hours.filter(({ date }) => to.isAfter(date)),
         ];
       }
 
@@ -107,10 +101,7 @@ export function getRelativeStats(params?: IGetRelativeStatsParams): Promise<IHou
 
 export function getStatusFromStats(hours: IHourStats[]): Statuses {
   const time = dayjs().add(20, 'minute');
-  const countOfPeople = hours.find(item => {
-    const [ hour ] = item.name.split(':').map(unit => Number.parseInt(unit));
-    return hour === time.hour();
-  })?.value;
+  const countOfPeople = hours.find(item => time.isSame(item.date, 'hour'))?.value;
 
   return getStatusFromCountOfPeople(countOfPeople);
 }
