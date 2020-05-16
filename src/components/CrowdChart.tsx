@@ -1,80 +1,47 @@
 import React, { useEffect, useRef } from 'react';
 
-import Chart from "chart.js";
-import "chartjs-plugin-zoom";
+import dayjs from 'dayjs';
 
-import { getStatusFromCountOfPeople, IHourStats } from '../services/status';
-import { theme } from '../utils/theme';
-import { Statuses } from '../enums/Statuses';
+import { ChartPoint } from 'chart.js';
+import { crowdChart } from '../utils/crowdChart';
 
 export interface ICrowdChartProps {
-  data: IHourStats[];
-  zoom?: boolean;
+  data: ChartPoint[];
   drag?: boolean;
 }
 
-export const CrowdChart = ({ data, zoom, drag }: ICrowdChartProps) => {
-  const canvasElement = useRef(null);
+export const CrowdChart = ({ data, drag }: ICrowdChartProps) => {
+  const chartCtx = useRef<any>(null);
+  const canvasElement = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const ctx = canvasElement.current;
+    if (canvasElement?.current) {
+      const min = dayjs().subtract(3, 'hour').minute(30).second(0).toDate();
+      const max = dayjs().add(3, 'hour').minute(30).second(0).toDate();
 
-    if (ctx && data) {
-      new Chart(ctx, {
-        type: 'bar',
-        options: {
-          responsive: true,
-          tooltips: {
-            cornerRadius: 2
-          },
-          legend: {
-            display: false
-          },
-          plugins: {
-            zoom: {
-              sensitivity: 1,
-              pan: {
-                enabled: drag,
-                mode: 'x'
-              },
-              zoom: {
-                rangeMax: {
-                  x: 5,
-                },
-                enabled: zoom,
-                mode: 'x',
-              }
-            }
-          }
-        },
-        data: {
-          labels: data.map(item => item.name),
-          datasets: [{
-            data: data.map(item => item.value),
-            backgroundColor: ({ dataIndex}) => {
-              if (!dataIndex) return theme.palette.info.main;
-              const value = data[dataIndex].value;
-
-              switch (getStatusFromCountOfPeople(value)) {
-                case Statuses.PERFECT:
-                  return theme.palette.success.main;
-                case Statuses.NICE:
-                  return theme.palette.info.main;
-                case Statuses.NOT_BEST:
-                  return theme.palette.warning.main;
-                case Statuses.NO_WAY:
-                  return theme.palette.error.main;
-                default:
-                  return theme.palette.info.main;
-              }
-            }
-          }],
+      chartCtx.current = crowdChart({
+        canvas: canvasElement.current,
+        drag: drag,
+        min: min,
+        max: max,
+        limit: {
+          min: dayjs().hour(0).minute(0).second(0).subtract(30, 'minute').toDate(),
+          max: dayjs().hour(24).minute(0).second(0).add(30, 'minute').toDate(),
         }
       });
     }
-  }, [canvasElement, data, drag, zoom])
+  }, [canvasElement, drag]);
+  
+  useEffect(() => {
+    if (chartCtx?.current?.data?.datasets) {
+      chartCtx.current.data.datasets[0].data = data;
+      chartCtx.current.update();
+    }
+  }, [chartCtx, data]);
 
-  return <canvas ref={canvasElement} />;
+  return (
+    <canvas ref={canvasElement} />
+  );
 };
 
 export default CrowdChart;

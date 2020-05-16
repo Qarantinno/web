@@ -2,6 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import { ChartPoint } from 'chart.js';
+
 import { useTranslation } from 'react-i18next';
 
 import Fab from '@material-ui/core/Fab';
@@ -13,14 +15,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Box from '@material-ui/core/Box';
 
 import { CrowdChart } from "../../components/CrowdChart";
-import { Layout } from '../../components/Layout';
 
+import { Layout } from '../../components/Layout';
 import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
 import { WEEK_DAYS } from "../../constants/WEEK_DAYS";
-import { getStats, IHourStats } from '../../services/status';
+import { getChartDataFromStats, getStats } from '../../services/status';
 
 export const StatisticPage = () => {
-  const [stats, setStats] = useState<IHourStats[]>([]);
+  const [chartData, setChartData] = useState<ChartPoint[]>([]);
   const [placeKind, setPlaceKind] = useState("any");
   const [weekDay, setWeekDay] = useState("any");
 
@@ -31,7 +33,7 @@ export const StatisticPage = () => {
       placeModifier: placeKind,
       weekDay: weekDay,
     }).then(({ data }) => {
-      setStats(data.hours);
+      setChartData(getChartDataFromStats(data.hours));
     });
   }, [placeKind, weekDay]);
 
@@ -42,62 +44,62 @@ export const StatisticPage = () => {
   function handleWeekDayChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
     setWeekDay(target.value as string);
   }
-
+  
   return (
     <Layout>
-      <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 0.7fr 1.1fr">
+      <Box pt={2}>
         <Link to="/">
           <Fab color="primary" aria-label="add" size="large">
             <ArrowBack fontSize="large" />
           </Fab>
         </Link>
-        <Box>
-          <Box pt={2} pb={2}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="place-kind-label">
-                {t("option-label-modifier")}
-              </InputLabel>
-              <Select
-                id="place-kind"
-                labelId="place-kind-label"
-                onChange={handlePlaceKindChanged}
-                value={placeKind}
-                label={t("option-label-modifier")}
-              >
-                <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
-                {PLACE_SIZES.map((place) => (
-                  <MenuItem key={place} value={place}>
-                    {t(`option-modifier-${place}`)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box pt={2} pb={2}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="week-day-label">
-                {t("option-label-week-day")}
-              </InputLabel>
-              <Select
-                id="week-day"
-                labelId="week-day-label"
-                onChange={handleWeekDayChanged}
-                value={weekDay}
-                label={t("option-label-week-day")}
-              >
-                <MenuItem value="any">{t("option-week-day-any")}</MenuItem>
-                {WEEK_DAYS.map((weekDay) => (
-                  <MenuItem key={weekDay} value={weekDay}>
-                    {t(`option-week-day-${weekDay}`)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+      </Box>
+      <Box>
+        <Box pt={10} pb={2}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="place-kind-label">
+              {t("option-label-modifier")}
+            </InputLabel>
+            <Select
+              id="place-kind"
+              labelId="place-kind-label"
+              onChange={handlePlaceKindChanged}
+              value={placeKind}
+              label={t("option-label-modifier")}
+            >
+              <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
+              {PLACE_SIZES.map((place) => (
+                <MenuItem key={place} value={place}>
+                  {t(`option-modifier-${place}`)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
-        <Box height={1}>
-          <CrowdChart data={stats} zoom drag />
+        <Box pt={2} pb={5}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="week-day-label">
+              {t("option-label-week-day")}
+            </InputLabel>
+            <Select
+              id="week-day"
+              labelId="week-day-label"
+              onChange={handleWeekDayChanged}
+              value={weekDay}
+              label={t("option-label-week-day")}
+            >
+              <MenuItem value="any">{t("option-week-day-any")}</MenuItem>
+              {WEEK_DAYS.map((weekDay) => (
+                <MenuItem key={weekDay} value={weekDay}>
+                  {t(`option-week-day-${weekDay}`)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
+      </Box>
+      <Box height={1}>
+        <CrowdChart data={chartData} drag />
       </Box>
     </Layout>
   );

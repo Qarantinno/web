@@ -1,13 +1,11 @@
 import { AxiosResponse } from 'axios';
 
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from 'dayjs';
 
 import { httpClient } from '../utils/httpClient';
 import { Statuses } from '../enums/Statuses';
 
-export interface IInterval { from: number; to: number; }
-
-export interface IHourStats { name: string; value: number; }
+export interface IHourStats { name: string; value: number; date: Date }
 
 export interface IHalvesStatus { name: string; value: number; }
 
@@ -24,56 +22,108 @@ export interface IGetStatusParams {
 }
 
 export function getStats(params?: IGetStatusParams): Promise<AxiosResponse<IGetStatsResponse>> {
-  return httpClient.get(`/stats`, { params });
+  const date = params?.moment;
+
+  return httpClient.get(`/stats`, { params }).then((res) => {
+    if (!date) {
+      const hours = res.data.hours.map((item: IHourStats) => ({
+        ...item,
+        date: dayjs()
+          .hour(Number.parseInt(item.name.split(':')[0]))
+          .minute(0)
+          .second(0)
+          .millisecond(0)
+      }));
+
+      return {
+        ...res,
+        data: { ...res.data, hours }
+      }
+    }
+
+    const hours = res.data.hours.map((item: IHourStats) => ({
+      ...item,
+      date: dayjs(date)
+        .hour(Number.parseInt(item.name.split(':')[0]))
+        .minute(0)
+        .second(0)
+        .millisecond(0)
+    }));
+
+    return {
+      ...res,
+      data: { ...res.data, hours }
+    }
+  });
 }
 
-export function getRelativeStats(interval?: IInterval): Promise<IHourStats[]> {
-  if (interval) {
-    const from = interval.from < 0 
-      ? dayjs().subtract(-interval.from, 'hour') 
-      : dayjs().add(interval.from, 'hour');
+export interface IGetRelativeStatsParams { from: Dayjs; to: Dayjs; }
 
-    const to = interval.to < 0
-      ? dayjs().subtract(-interval.to, 'hour')
-      : dayjs().add(interval.to, 'hour');
-    
-    if (to.date() - from.date() === 1) {
-      return Promise.all([
-        getStats({ moment: from.toISOString() }),
-        getStats({ moment: to.toISOString() }),
-      ]).then(([before, after]) => {
-        return [
-          ...before.data.hours.filter(item => {
-            const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
-            return hour >= from.hour();
-          }),
-          ...after.data.hours.filter(item => {
-            const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
-            return hour <= to.hour();
-          })
-        ]
-      })
-    }
-    
-    return getStats().then(({ data }) => {
-      return data.hours.filter(item => {
-        const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
-        return hour >= from.hour() && hour <= to.hour();
-      })
-    });
+export function getRelativeStats(params?: IGetRelativeStatsParams): Promise<IHourStats[]> {
+  if (!params) {
+    return getStats().then(({ data }) => data.hours );
   }
 
-  return getStats().then(({ data }) => data.hours );
+  const { from, to } = params;
+
+  const diff = to.diff(from, 'day');
+
+  const requests = [];
+
+  for (let i = 0; i <= diff; i += 1) {
+    requests.push(getStats({ moment: from.add(i, 'day').toISOString() }));
+  }
+
+  return Promise.all(requests)
+    .then(all => all.reduce<IHourStats[]>((result, item, index) => {
+      if (index === 0) {
+        return [
+          ...item.data.hours.filter(item => {
+            const [ hour ] = item.name.split(':').map(unit => Number.parseInt(unit));
+
+            return all.length === 1 
+              ? hour >= from.hour() && hour <= to.hour()
+              : hour >= from.hour();
+          }),
+        ];
+      }
+
+      if (index === all.length - 1) {
+        return [
+          ...result,
+          ...item.data.hours.filter(item => {
+            const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
+            return hour <= to.hour();
+          }),
+        ];
+      }
+
+      return [
+        ...result,
+        ...item.data.hours,
+      ];
+    }, []));
 }
 
 export function getStatusFromStats(hours: IHourStats[]): Statuses {
   const time = dayjs().add(20, 'minute');
   const countOfPeople = hours.find(item => {
-    const [ hour ] = item.name.split(':').map(unit => parseInt(unit));
+    const [ hour ] = item.name.split(':').map(unit => Number.parseInt(unit));
     return hour === time.hour();
   })?.value;
 
   return getStatusFromCountOfPeople(countOfPeople);
+}
+
+export function getChartDataFromStats(hours: IHourStats[]) {
+  return hours.map(item => {
+    const time = dayjs(item.date).minute(0).second(0).millisecond(0);
+
+    return {
+      x: time.toDate(),
+      y: item.value
+    }
+  })
 }
 
 export function getStatusFromCountOfPeople(value: number | undefined) {

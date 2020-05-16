@@ -3,6 +3,10 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
 
+import { ChartPoint } from 'chart.js';
+
+import dayjs from 'dayjs';
+
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
@@ -12,53 +16,54 @@ import Link from '@material-ui/core/Link';
 
 import { CrowdChart } from '../../components/CrowdChart';
 import { Status } from './components/Status';
-import { Layout } from '../../components/Layout';
 
+import { Layout } from '../../components/Layout';
 import { Statuses } from '../../enums/Statuses';
-import { getRelativeStats, getStatusFromStats, IHourStats } from '../../services/status';
+import { getRelativeStats, getStatusFromStats, getChartDataFromStats, IHourStats } from '../../services/status';
 import { useInterval } from '../../utils/useInterval';
 
 export const HomePage = () => {
   const [stats, setStats] = useState<IHourStats[]>([]);
-  const [status, setStatus] = useState<Statuses>();
+  const [chartData, setChartData] = useState<ChartPoint[]>([]);
+  const [status, setStatus] = useState<Statuses>(Statuses.UNDEFINED);
   const { t } = useTranslation();
 
   useInterval(() => {
-    getRelativeStats({ from: -2, to: 3 }).then(setStats);
+    getRelativeStats({ 
+      from: dayjs().subtract(3, 'hour'),
+      to: dayjs().add(3, 'hour'), 
+    }).then(setStats);
   }, 60000);
   
   useEffect(() => {
     setStatus(getStatusFromStats(stats));
+    setChartData(getChartDataFromStats(stats));
   }, [stats]);
   
   return (
     <Layout>
-      <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="0.4fr 2fr 0.6fr">
-        <Box pt={2}>
-          <Status status={status} />
-        </Box>
-        <Box height={1}>
-          <Box p={1}>
-            <CrowdChart data={stats} />
-          </Box>
-          <Box p={1} textAlign="center">
-            <Link component={RouterLink} to="/statistic" underline="none">
-              <Button variant="contained" color="default">
-                {t("btn-label-discover")}
-              </Button>
-            </Link>
-          </Box>
+      <Status status={status} />
+      <Box>
+        <Box p={1}>
+          <CrowdChart data={chartData} />
         </Box>
         <Box p={1} textAlign="center">
-          <Box p={2}>
-            <Typography>{t("msg-do-share")}</Typography>
-          </Box>
-          <Link component={RouterLink} to="/share" underline="none">
-            <Fab color="primary" aria-label="add" size="large">
-              <AddIcon fontSize="large" />
-            </Fab>
+          <Link component={RouterLink} to="/statistic" underline="none">
+            <Button variant="contained" color="default">
+              {t("btn-label-discover")}
+            </Button>
           </Link>
         </Box>
+      </Box>
+      <Box textAlign="center">
+        <Box p={2}>
+          <Typography>{t("msg-do-share")}</Typography>
+        </Box>
+        <Link component={RouterLink} to="/share" underline="none">
+          <Fab color="primary" aria-label="add" size="large">
+            <AddIcon fontSize="large" />
+          </Fab>
+        </Link>
       </Box>
     </Layout>
   );

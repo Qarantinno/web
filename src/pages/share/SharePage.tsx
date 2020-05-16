@@ -49,38 +49,42 @@ export const SharePage = () => {
 
   return (
     <Layout>
-      <Box height={1} display="grid" gridRowGap={10} gridTemplateRows="1fr 1fr 1fr 1fr">
+      <Box pt={2}>
         <Link to="/">
           <Fab color="primary" aria-label="add" size="large">
             <ArrowBack fontSize="large" />
           </Fab>
         </Link>
-        <FormControl fullWidth variant="outlined">
-          <InputLabel id="place-kind-label">
-            {t("option-label-modifier")}
-          </InputLabel>
-          <Select
-            id="place-kind"
-            labelId="place-kind-label"
-            onChange={handlePlaceKindChanged}
-            value={placeKind}
-            label={t("option-label-modifier")}
-          >
-            <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
-            {PLACE_SIZES.map((place) => (
-              <MenuItem key={place} value={place}>
-                {t(`option-modifier-${place}`)}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Box p={3}>
+      </Box>
+      <Box height={1}>
+        <Box pt={10} pb={5}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="place-kind-label">
+              {t("option-label-modifier")}
+            </InputLabel>
+            <Select
+              id="place-kind"
+              labelId="place-kind-label"
+              onChange={handlePlaceKindChanged}
+              value={placeKind}
+              label={t("option-label-modifier")}
+            >
+              <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
+              {PLACE_SIZES.map((place) => (
+                <MenuItem key={place} value={place}>
+                  {t(`option-modifier-${place}`)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box pt={5} pb={5} pl={3} pr={3}>
           <CrowdLevelSlider
             value={crowdLevel}
             onChange={handleCrowdLevelChanged}
           />
         </Box>
-        <Box textAlign="center">
+        <Box pt={5} pb={5} textAlign="center">
           <Button size="large" variant="contained" color="primary" onClick={shareTheCrowdInfo}>
             {loading ? <CircularProgress color="inherit" size={26} /> : t("btn-label-post")}
           </Button>
