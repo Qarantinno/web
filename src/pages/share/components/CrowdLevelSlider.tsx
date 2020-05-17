@@ -5,7 +5,7 @@ import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 
 const marks = [
   {
-    value: 0,
+    value: 1,
     label: (
       <div>
         <div>
@@ -84,6 +84,7 @@ export const CrowdLevelSlider = ({ onChange, value = 50 }: ICrowdLevelSliderProp
 
   return (
     <Slider
+      min={1}
       value={level}
       step={1}
       valueLabelDisplay="auto"

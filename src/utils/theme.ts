@@ -3,16 +3,12 @@ import { enUS, ruRU } from "@material-ui/core/locale";
 
 import i18next from "i18next";
 
-let lang;
+const lang = i18next.language === 'en' ? enUS : ruRU;
 
-switch (i18next.language) {
-  case 'en':
-    lang = enUS;
-    break;
-  case 'ru':
-  default:
-    lang = ruRU;
-    break;
-}
+const isDark = false; // window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-export const theme = createMuiTheme({}, lang);
+export const theme = createMuiTheme({
+  palette: {
+    type: isDark ? 'dark' : 'light'
+  }
+}, lang);

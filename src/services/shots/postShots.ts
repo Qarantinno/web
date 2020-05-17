@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 
-import { httpClient } from '../utils/httpClient';
-import { PlaceSizes } from '../enums/PlaceSizes';
+import { httpClient } from '../../utils/httpClient';
+import { PlaceSizes } from '../../enums/PlaceSizes';
 
 export interface IPostShotsParams {
   people: number;
@@ -18,7 +18,7 @@ export interface IPostShotsParams {
 }
 
 export function postShots(params?: IPostShotsParams): Promise<AxiosResponse> {
-  return httpClient.post(`/shots`, { 
+  return httpClient.post(`/shots`, {
     params: {
       ...params,
       source: 'web',

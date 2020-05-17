@@ -7,10 +7,10 @@ import dayjs from 'dayjs';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
-import { Emoji } from './Emoji';
-
 import { Statuses } from '../../../enums/Statuses';
 import { STATUS_TO_EMOJI } from '../../../constants/STATUS_TO_EMOJI';
+
+import { Emoji } from './Emoji';
 
 export interface IStatusProps {
   status: Statuses | undefined;

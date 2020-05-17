@@ -1,4 +1,5 @@
 export enum WeekDays {
+  ANY = "any",
   MON = "mon",
   TUE = "tue",
   WED = "wed",

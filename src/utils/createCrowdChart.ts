@@ -3,7 +3,7 @@ import Chart, { ChartColor, ChartPoint, Scriptable } from 'chart.js';
 import ZoomPlugin from "chartjs-plugin-zoom";
 
 import { theme } from './theme';
-import { getStatusFromCountOfPeople } from '../services/status';
+import { getStatusFromCountOfPeople } from '../services/status/utils/getStatusFromCountOfPeople';
 import { Statuses } from '../enums/Statuses';
 
 export const backgroundColor: Scriptable<ChartColor> = ({ dataIndex: index, dataset }) => {
@@ -40,7 +40,7 @@ export interface ICrowdChartParams {
   };
 }
 
-export const crowdChart = (params: ICrowdChartParams) => {
+export const createCrowdChart: (params: ICrowdChartParams) => Chart = (params: ICrowdChartParams) => {
   const { canvas, drag = false, min, max, limit } = params;
   
   return new Chart(canvas, {

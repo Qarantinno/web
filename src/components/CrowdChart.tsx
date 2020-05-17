@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from 'react';
 
 import dayjs from 'dayjs';
 
-import { ChartPoint } from 'chart.js';
-import { crowdChart } from '../utils/crowdChart';
+import Chart, { ChartPoint } from 'chart.js';
+
+import { createCrowdChart } from '../utils/createCrowdChart';
 
 export interface ICrowdChartProps {
   data: ChartPoint[];
@@ -11,31 +12,37 @@ export interface ICrowdChartProps {
 }
 
 export const CrowdChart = ({ data, drag }: ICrowdChartProps) => {
-  const chartCtx = useRef<any>(null);
+  const chartCtx = useRef<Chart | null>(null);
   const canvasElement = useRef<HTMLCanvasElement>(null);
+  const currentHour = dayjs().minute(30).second(0).millisecond(0);
 
   useEffect(() => {
     if (canvasElement?.current) {
-      const min = dayjs().subtract(3, 'hour').minute(30).second(0).toDate();
-      const max = dayjs().add(3, 'hour').minute(30).second(0).toDate();
+      const min = currentHour.subtract(3, 'hour').toDate();
+      const max = currentHour.add(3, 'hour').toDate();
 
-      chartCtx.current = crowdChart({
+      chartCtx.current = createCrowdChart({
         canvas: canvasElement.current,
         drag: drag,
         min: min,
         max: max,
         limit: {
-          min: dayjs().hour(0).minute(0).second(0).subtract(30, 'minute').toDate(),
-          max: dayjs().hour(24).minute(0).second(0).add(30, 'minute').toDate(),
+          min: currentHour.hour(0).toDate(),
+          max: currentHour.hour(24).toDate(),
         }
       });
     }
-  }, [canvasElement, drag]);
+  }, [canvasElement, drag, currentHour]);
   
   useEffect(() => {
-    if (chartCtx?.current?.data?.datasets) {
-      chartCtx.current.data.datasets[0].data = data;
-      chartCtx.current.update();
+    if (chartCtx?.current instanceof Chart) {
+      const chart = chartCtx.current;
+      const datasets = chart.data.datasets;
+
+      if (datasets && datasets.length > 0) {
+        datasets[0].data = data;
+        chart.update();
+      }
     }
   }, [chartCtx, data]);
 

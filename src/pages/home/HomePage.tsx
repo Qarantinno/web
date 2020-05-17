@@ -15,25 +15,33 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
 import { CrowdChart } from '../../components/CrowdChart';
-import { Status } from './components/Status';
-
 import { Layout } from '../../components/Layout';
 import { Statuses } from '../../enums/Statuses';
-import { getRelativeStats, getStatusFromStats, getChartDataFromStats, IHourStats } from '../../services/status';
-import { useInterval } from '../../utils/useInterval';
+import { fetchRelativeStats } from '../../services/status/fetchRelativeStats';
+import { getStatusFromStats } from '../../services/status/utils/getStatusFromStats';
+import { getChartDataFromStats} from '../../services/status/utils/getChartDataFromStats';
+import { IParsedStats } from '../../services/status/interfaces/IStats';
+
+import { Status } from './components/Status';
 
 export const HomePage = () => {
-  const [stats, setStats] = useState<IHourStats[]>([]);
+  const [stats, setStats] = useState<IParsedStats[]>([]);
   const [chartData, setChartData] = useState<ChartPoint[]>([]);
   const [status, setStatus] = useState<Statuses>(Statuses.UNDEFINED);
+  const [timer, setTimer] = useState(dayjs().minute(0).millisecond(0));
   const { t } = useTranslation();
 
-  useInterval(() => {
-    getRelativeStats({ 
-      from: dayjs().subtract(3, 'hour'),
-      to: dayjs().add(3, 'hour'), 
-    }).then(setStats);
-  }, 60000);
+  useEffect(() => {
+    fetchRelativeStats({
+      from: timer.subtract(5, 'hour'),
+      to: timer.add(5, 'hour'),
+    }).then((data) => {
+      setStats(data);
+      setTimeout(() => {
+        setTimer(dayjs().minute(0).millisecond(0));
+      }, 60000);
+    });
+  }, [timer]);
   
   useEffect(() => {
     setStatus(getStatusFromStats(stats));

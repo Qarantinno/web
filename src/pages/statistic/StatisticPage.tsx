@@ -14,35 +14,45 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import Box from '@material-ui/core/Box';
 
-import { CrowdChart } from "../../components/CrowdChart";
+import dayjs from 'dayjs';
 
+import { CrowdChart } from "../../components/CrowdChart";
 import { Layout } from '../../components/Layout';
+
 import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
 import { WEEK_DAYS } from "../../constants/WEEK_DAYS";
-import { getChartDataFromStats, getStats } from '../../services/status';
+import { fetchStats } from '../../services/status/fetchStats';
+import { getChartDataFromStats } from '../../services/status/utils/getChartDataFromStats';
+import { IParsedStats } from '../../services/status/interfaces/IStats';
+import { PlaceSizes } from '../../enums/PlaceSizes';
+import { WeekDays } from '../../enums/WeekDays';
 
 export const StatisticPage = () => {
+  const [stats, setStats] = useState<IParsedStats[]>([]);
   const [chartData, setChartData] = useState<ChartPoint[]>([]);
-  const [placeKind, setPlaceKind] = useState("any");
-  const [weekDay, setWeekDay] = useState("any");
+  const [placeSize, setPlaceSize] = useState<PlaceSizes>(PlaceSizes.ANY);
+  const [weekDay, setWeekDay] = useState<WeekDays>(WeekDays.ANY);
 
   const { t } = useTranslation();
   
   useEffect(() => {
-    getStats({
-      placeModifier: placeKind,
+    fetchStats({
+      moment: dayjs().toISOString(),
+      placeModifier: placeSize,
       weekDay: weekDay,
-    }).then(({ data }) => {
-      setChartData(getChartDataFromStats(data.hours));
-    });
-  }, [placeKind, weekDay]);
+    }).then(setStats);
+  }, [placeSize, weekDay]);
+  
+  useEffect(() => {
+    setChartData(getChartDataFromStats(stats));
+  }, [stats])
 
-  function handlePlaceKindChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
-    setPlaceKind(target.value as string);
+  function handlePlaceSizeChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+    setPlaceSize(target.value as PlaceSizes);
   }
 
   function handleWeekDayChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
-    setWeekDay(target.value as string);
+    setWeekDay(target.value as WeekDays);
   }
   
   return (
@@ -57,17 +67,17 @@ export const StatisticPage = () => {
       <Box>
         <Box pt={10} pb={2}>
           <FormControl fullWidth variant="outlined">
-            <InputLabel id="place-kind-label">
+            <InputLabel id="place-size-label">
               {t("option-label-modifier")}
             </InputLabel>
             <Select
-              id="place-kind"
-              labelId="place-kind-label"
-              onChange={handlePlaceKindChanged}
-              value={placeKind}
+              id="place-size"
+              labelId="place-size-label"
+              onChange={handlePlaceSizeChanged}
+              value={placeSize}
               label={t("option-label-modifier")}
             >
-              <MenuItem value="any">{t("option-modifier-any")}</MenuItem>
+              <MenuItem value={PlaceSizes.ANY}>{t("option-modifier-any")}</MenuItem>
               {PLACE_SIZES.map((place) => (
                 <MenuItem key={place} value={place}>
                   {t(`option-modifier-${place}`)}
@@ -88,7 +98,7 @@ export const StatisticPage = () => {
               value={weekDay}
               label={t("option-label-week-day")}
             >
-              <MenuItem value="any">{t("option-week-day-any")}</MenuItem>
+              <MenuItem value={WeekDays.ANY}>{t("option-week-day-any")}</MenuItem>
               {WEEK_DAYS.map((weekDay) => (
                 <MenuItem key={weekDay} value={weekDay}>
                   {t(`option-week-day-${weekDay}`)}
