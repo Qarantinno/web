@@ -1,4 +1,4 @@
-import { PlaceSizes } from '../enums/PlaceSizes';
+import { PlaceSizes } from "../enums/PlaceSizes";
 
 export const PLACE_SIZES: PlaceSizes[] = [
   PlaceSizes.MINI,

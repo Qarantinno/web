@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios';
+import { AxiosResponse } from "axios";
 
-import { httpClient } from '../../utils/httpClient';
-import { PlaceSizes } from '../../enums/PlaceSizes';
+import { httpClient } from "../../utils/httpClient";
+import { PlaceSizes } from "../../enums/PlaceSizes";
 
 export interface IPostShotsParams {
   people: number;
@@ -9,11 +9,11 @@ export interface IPostShotsParams {
     type?: string;
     modifier: PlaceSizes;
   };
-  source?: 'web';
+  source?: "web";
   shotAt?: string;
   trackingData?: {
     sessionId?: string;
-    sourceId?: 'web';
+    sourceId?: "web";
   };
 }
 
@@ -21,11 +21,11 @@ export function postShots(params?: IPostShotsParams): Promise<AxiosResponse> {
   return httpClient.post(`/shots`, {
     params: {
       ...params,
-      source: 'web',
+      source: "web",
       trackingData: {
         sessionId: params?.trackingData?.sourceId,
-        sourceId: 'web'
-      }
-    }
+        sourceId: "web",
+      },
+    },
   });
 }

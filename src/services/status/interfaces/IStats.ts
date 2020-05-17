@@ -7,4 +7,3 @@ export interface IParsedStats {
   date: Date;
   value: number;
 }
-

@@ -1,7 +1,7 @@
 /// <reference types="react-scripts" />
 
-declare module 'react-div-100vh' {
-  import { ReactNode } from 'react';
+declare module "react-div-100vh" {
+  import { ReactNode } from "react";
 
   function FullHeight(props?: {
     children: ReactNode;
@@ -10,11 +10,11 @@ declare module 'react-div-100vh' {
   export default FullHeight;
 }
 
-declare module 'chartjs-plugin-zoom' {
-  import { Chart, ChartOptions } from 'chart.js';
+declare module "chartjs-plugin-zoom" {
+  import { Chart, ChartOptions } from "chart.js";
 
   const ZoomPlugin: {
-    id: 'zoom',
+    id: "zoom";
     afterInit: (chart: Chart) => void;
     beforeUpdate: (chart: Chart, options: ChartOptions) => void;
     beforeInit: (chart: Chart, options: ChartOptions) => void;

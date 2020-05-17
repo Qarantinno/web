@@ -1,31 +1,31 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from "react";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import { ChartPoint } from 'chart.js';
+import { ChartPoint } from "chart.js";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-import Fab from '@material-ui/core/Fab';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Fab from "@material-ui/core/Fab";
+import ArrowBack from "@material-ui/icons/ArrowBack";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 import { CrowdChart } from "../../components/CrowdChart";
-import { Layout } from '../../components/Layout';
+import { Layout } from "../../components/Layout";
 
 import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
 import { WEEK_DAYS } from "../../constants/WEEK_DAYS";
-import { fetchStats } from '../../services/status/fetchStats';
-import { getChartDataFromStats } from '../../services/status/utils/getChartDataFromStats';
-import { IParsedStats } from '../../services/status/interfaces/IStats';
-import { PlaceSizes } from '../../enums/PlaceSizes';
-import { WeekDays } from '../../enums/WeekDays';
+import { fetchStats } from "../../services/status/fetchStats";
+import { getChartDataFromStats } from "../../services/status/utils/getChartDataFromStats";
+import { IParsedStats } from "../../services/status/interfaces/IStats";
+import { PlaceSizes } from "../../enums/PlaceSizes";
+import { WeekDays } from "../../enums/WeekDays";
 
 export const StatisticPage = () => {
   const [stats, setStats] = useState<IParsedStats[]>([]);
@@ -34,7 +34,7 @@ export const StatisticPage = () => {
   const [weekDay, setWeekDay] = useState<WeekDays>(WeekDays.ANY);
 
   const { t } = useTranslation();
-  
+
   useEffect(() => {
     fetchStats({
       moment: dayjs().toISOString(),
@@ -42,19 +42,23 @@ export const StatisticPage = () => {
       weekDay: weekDay,
     }).then(setStats);
   }, [placeSize, weekDay]);
-  
+
   useEffect(() => {
     setChartData(getChartDataFromStats(stats));
-  }, [stats])
+  }, [stats]);
 
-  function handlePlaceSizeChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+  function handlePlaceSizeChanged({
+    target,
+  }: ChangeEvent<{ name?: string | undefined; value: unknown }>) {
     setPlaceSize(target.value as PlaceSizes);
   }
 
-  function handleWeekDayChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+  function handleWeekDayChanged({
+    target,
+  }: ChangeEvent<{ name?: string | undefined; value: unknown }>) {
     setWeekDay(target.value as WeekDays);
   }
-  
+
   return (
     <Layout>
       <Box pt={2}>
@@ -77,7 +81,9 @@ export const StatisticPage = () => {
               value={placeSize}
               label={t("option-label-modifier")}
             >
-              <MenuItem value={PlaceSizes.ANY}>{t("option-modifier-any")}</MenuItem>
+              <MenuItem value={PlaceSizes.ANY}>
+                {t("option-modifier-any")}
+              </MenuItem>
               {PLACE_SIZES.map((place) => (
                 <MenuItem key={place} value={place}>
                   {t(`option-modifier-${place}`)}
@@ -98,7 +104,9 @@ export const StatisticPage = () => {
               value={weekDay}
               label={t("option-label-week-day")}
             >
-              <MenuItem value={WeekDays.ANY}>{t("option-week-day-any")}</MenuItem>
+              <MenuItem value={WeekDays.ANY}>
+                {t("option-week-day-any")}
+              </MenuItem>
               {WEEK_DAYS.map((weekDay) => (
                 <MenuItem key={weekDay} value={weekDay}>
                   {t(`option-week-day-${weekDay}`)}

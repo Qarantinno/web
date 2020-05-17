@@ -1,25 +1,25 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from "react";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-import Fab from '@material-ui/core/Fab';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from "@material-ui/core/Fab";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { Layout } from '../../components/Layout';
-import { PLACE_SIZES } from '../../constants/PLACE_SIZES';
-import { PlaceSizes } from '../../enums/PlaceSizes';
-import { postShots } from '../../services/shots/postShots';
+import { Layout } from "../../components/Layout";
+import { PLACE_SIZES } from "../../constants/PLACE_SIZES";
+import { PlaceSizes } from "../../enums/PlaceSizes";
+import { postShots } from "../../services/shots/postShots";
 
-import { CrowdLevelSlider } from './components/CrowdLevelSlider';
+import { CrowdLevelSlider } from "./components/CrowdLevelSlider";
 
 export const SharePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,7 +28,9 @@ export const SharePage = () => {
 
   const { t } = useTranslation();
 
-  function handlePlaceSizeChanged({ target }: ChangeEvent<{ name?: string | undefined, value: unknown }>) {
+  function handlePlaceSizeChanged({
+    target,
+  }: ChangeEvent<{ name?: string | undefined; value: unknown }>) {
     setPlaceSize(target.value as PlaceSizes);
   }
 
@@ -41,7 +43,7 @@ export const SharePage = () => {
 
     postShots({
       people: crowdLevel,
-      place: { modifier: placeSize }
+      place: { modifier: placeSize },
     }).finally(() => {
       setLoading(false);
     });
@@ -84,8 +86,17 @@ export const SharePage = () => {
           />
         </Box>
         <Box pt={5} pb={5} textAlign="center">
-          <Button size="large" variant="contained" color="primary" onClick={shareTheCrowdInfo}>
-            {loading ? <CircularProgress color="inherit" size={26} /> : t("btn-label-post")}
+          <Button
+            size="large"
+            variant="contained"
+            color="primary"
+            onClick={shareTheCrowdInfo}
+          >
+            {loading ? (
+              <CircularProgress color="inherit" size={26} />
+            ) : (
+              t("btn-label-post")
+            )}
           </Button>
         </Box>
       </Box>

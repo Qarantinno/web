@@ -1,4 +1,4 @@
-import { Statuses } from '../../../enums/Statuses';
+import { Statuses } from "../../../enums/Statuses";
 
 export function getStatusFromCountOfPeople(value: number) {
   const isItPerfect = value <= 20;

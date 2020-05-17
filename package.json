@@ -1,5 +1,5 @@
 {
-  "name": "crowd-meter",
+  "name": "outcrowd",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -33,16 +33,26 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
-    "@types/hammerjs": "^2.0.36",
     "axios-mock-adapter": "^1.18.1",
     "husky": "^4.2.5",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1"
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "lint": "yarn eslint:check && yarn prettier:check",
+    "lint:fix": "yarn eslint:fix && yarn prettier:fix",
+    "eslint:fix": "eslint . --ext .ts,.tsx --fix",
+    "eslint:check": "eslint . --ext .ts,.tsx",
+    "prettier:fix": "prettier --write '*/**/*.{ts,tsx}'",
+    "prettier:check": "prettier --check '*/**/*.{ts,tsx}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint:fix",
+      "pre-push": "yarn lint"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"

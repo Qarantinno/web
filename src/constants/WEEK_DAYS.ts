@@ -1,4 +1,4 @@
-import { WeekDays } from '../enums/WeekDays';
+import { WeekDays } from "../enums/WeekDays";
 
 export const WEEK_DAYS: WeekDays[] = [
   WeekDays.MON,

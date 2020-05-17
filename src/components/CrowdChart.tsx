@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
-import Chart, { ChartPoint } from 'chart.js';
+import Chart, { ChartPoint } from "chart.js";
 
-import { createCrowdChart } from '../utils/createCrowdChart';
+import { createCrowdChart } from "../utils/createCrowdChart";
 
 export interface ICrowdChartProps {
   data: ChartPoint[];
@@ -18,8 +18,8 @@ export const CrowdChart = ({ data, drag }: ICrowdChartProps) => {
 
   useEffect(() => {
     if (canvasElement?.current) {
-      const min = currentHour.subtract(3, 'hour').toDate();
-      const max = currentHour.add(3, 'hour').toDate();
+      const min = currentHour.subtract(3, "hour").toDate();
+      const max = currentHour.add(3, "hour").toDate();
 
       chartCtx.current = createCrowdChart({
         canvas: canvasElement.current,
@@ -29,11 +29,11 @@ export const CrowdChart = ({ data, drag }: ICrowdChartProps) => {
         limit: {
           min: currentHour.hour(0).toDate(),
           max: currentHour.hour(24).toDate(),
-        }
+        },
       });
     }
   }, [canvasElement, drag, currentHour]);
-  
+
   useEffect(() => {
     if (chartCtx?.current instanceof Chart) {
       const chart = chartCtx.current;
@@ -46,9 +46,7 @@ export const CrowdChart = ({ data, drag }: ICrowdChartProps) => {
     }
   }, [chartCtx, data]);
 
-  return (
-    <canvas ref={canvasElement} />
-  );
+  return <canvas ref={canvasElement} />;
 };
 
 export default CrowdChart;

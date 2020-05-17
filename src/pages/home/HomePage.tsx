@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-import { ChartPoint } from 'chart.js';
+import { ChartPoint } from "chart.js";
 
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 
-import { CrowdChart } from '../../components/CrowdChart';
-import { Layout } from '../../components/Layout';
-import { Statuses } from '../../enums/Statuses';
-import { fetchRelativeStats } from '../../services/status/fetchRelativeStats';
-import { getStatusFromStats } from '../../services/status/utils/getStatusFromStats';
-import { getChartDataFromStats} from '../../services/status/utils/getChartDataFromStats';
-import { IParsedStats } from '../../services/status/interfaces/IStats';
+import { CrowdChart } from "../../components/CrowdChart";
+import { Layout } from "../../components/Layout";
+import { Statuses } from "../../enums/Statuses";
+import { fetchRelativeStats } from "../../services/status/fetchRelativeStats";
+import { getStatusFromStats } from "../../services/status/utils/getStatusFromStats";
+import { getChartDataFromStats } from "../../services/status/utils/getChartDataFromStats";
+import { IParsedStats } from "../../services/status/interfaces/IStats";
 
-import { Status } from './components/Status';
+import { Status } from "./components/Status";
 
 export const HomePage = () => {
   const [stats, setStats] = useState<IParsedStats[]>([]);
@@ -33,8 +33,8 @@ export const HomePage = () => {
 
   useEffect(() => {
     fetchRelativeStats({
-      from: timer.subtract(5, 'hour'),
-      to: timer.add(5, 'hour'),
+      from: timer.subtract(5, "hour"),
+      to: timer.add(5, "hour"),
     }).then((data) => {
       setStats(data);
       setTimeout(() => {
@@ -42,12 +42,12 @@ export const HomePage = () => {
       }, 60000);
     });
   }, [timer]);
-  
+
   useEffect(() => {
     setStatus(getStatusFromStats(stats));
     setChartData(getChartDataFromStats(stats));
   }, [stats]);
-  
+
   return (
     <Layout>
       <Status status={status} />
@@ -75,6 +75,6 @@ export const HomePage = () => {
       </Box>
     </Layout>
   );
-}
+};
 
 export default HomePage;

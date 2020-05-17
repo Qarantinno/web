@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from "react";
 
 import Slider from "@material-ui/core/Slider";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
@@ -74,7 +74,10 @@ export interface ICrowdLevelSliderProps {
   onChange: (value: number) => void;
   value: number;
 }
-export const CrowdLevelSlider = ({ onChange, value = 50 }: ICrowdLevelSliderProps) => {
+export const CrowdLevelSlider = ({
+  onChange,
+  value = 50,
+}: ICrowdLevelSliderProps) => {
   const [level, setLevel] = useState<number>(value);
 
   function handleLevelChanged(_: ChangeEvent<{}>, value: number | number[]) {

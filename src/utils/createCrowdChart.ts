@@ -1,17 +1,20 @@
-import Chart, { ChartColor, ChartPoint, Scriptable } from 'chart.js';
+import Chart, { ChartColor, ChartPoint, Scriptable } from "chart.js";
 
 import ZoomPlugin from "chartjs-plugin-zoom";
 
-import { theme } from './theme';
-import { getStatusFromCountOfPeople } from '../services/status/utils/getStatusFromCountOfPeople';
-import { Statuses } from '../enums/Statuses';
+import { theme } from "./theme";
+import { getStatusFromCountOfPeople } from "../services/status/utils/getStatusFromCountOfPeople";
+import { Statuses } from "../enums/Statuses";
 
-export const backgroundColor: Scriptable<ChartColor> = ({ dataIndex: index, dataset }) => {
+export const backgroundColor: Scriptable<ChartColor> = ({
+  dataIndex: index,
+  dataset,
+}) => {
   if (!index) return theme.palette.info.main;
   if (!dataset) return theme.palette.info.main;
   const { data } = dataset;
   if (!data) return theme.palette.info.main;
-  const item = data[index] as ChartPoint
+  const item = data[index] as ChartPoint;
   if (!item) return theme.palette.info.main;
   const value = item.y as number;
 
@@ -27,7 +30,7 @@ export const backgroundColor: Scriptable<ChartColor> = ({ dataIndex: index, data
     default:
       return theme.palette.info.main;
   }
-}
+};
 
 export interface ICrowdChartParams {
   canvas: HTMLCanvasElement;
@@ -40,47 +43,49 @@ export interface ICrowdChartParams {
   };
 }
 
-export const createCrowdChart: (params: ICrowdChartParams) => Chart = (params: ICrowdChartParams) => {
+export const createCrowdChart: (params: ICrowdChartParams) => Chart = (
+  params: ICrowdChartParams
+) => {
   const { canvas, drag = false, min, max, limit } = params;
-  
+
   return new Chart(canvas, {
-    type: 'bar',
+    type: "bar",
     plugins: [ZoomPlugin],
     options: {
       responsive: true,
       tooltips: {
-        cornerRadius: 2
+        cornerRadius: 2,
       },
       legend: {
-        display: false
+        display: false,
       },
       scales: {
         yAxes: [
           {
             ticks: {
               max: 100,
-              min: 0
-            }
-          }
+              min: 0,
+            },
+          },
         ],
-        xAxes:[
+        xAxes: [
           {
-            type: 'time',
-            ticks: { 
+            type: "time",
+            ticks: {
               min,
               max,
             },
-            distribution: 'linear',
+            distribution: "linear",
             time: {
               stepSize: 1,
-              unit: 'hour',
+              unit: "hour",
               displayFormats: {
-                hour: 'HH:mm'
-              }
+                hour: "HH:mm",
+              },
             },
             gridLines: {
-              offsetGridLines: true
-            }
+              offsetGridLines: true,
+            },
           },
         ],
       },
@@ -89,22 +94,24 @@ export const createCrowdChart: (params: ICrowdChartParams) => Chart = (params: I
           sensitivity: 1,
           pan: {
             rangeMin: {
-              x: limit.min
+              x: limit.min,
             },
             rangeMax: {
-              x: limit.max
+              x: limit.max,
             },
             enabled: drag,
-            mode: 'x'
-          }
-        }
+            mode: "x",
+          },
+        },
       },
     },
     data: {
-      datasets: [{
-        data: [],
-        backgroundColor
-      }],
-    }
-  })
-}
+      datasets: [
+        {
+          data: [],
+          backgroundColor,
+        },
+      ],
+    },
+  });
+};

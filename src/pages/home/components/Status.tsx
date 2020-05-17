@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 
-import { Statuses } from '../../../enums/Statuses';
-import { STATUS_TO_EMOJI } from '../../../constants/STATUS_TO_EMOJI';
+import { Statuses } from "../../../enums/Statuses";
+import { STATUS_TO_EMOJI } from "../../../constants/STATUS_TO_EMOJI";
 
-import { Emoji } from './Emoji';
+import { Emoji } from "./Emoji";
 
 export interface IStatusProps {
   status: Statuses | undefined;
@@ -19,11 +19,11 @@ export interface IStatusProps {
 export const Status = ({ status }: IStatusProps) => {
   if (!status) status = Statuses.PERFECT;
 
-  const initialDate = dayjs().format('HH:mm');
+  const initialDate = dayjs().format("HH:mm");
   const [time, setTime] = useState(initialDate);
   const { t } = useTranslation();
 
-  useEffect(() => setTime(dayjs().format('HH:mm')), [status]);
+  useEffect(() => setTime(dayjs().format("HH:mm")), [status]);
 
   const symbol = STATUS_TO_EMOJI[status];
 
