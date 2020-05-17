@@ -55,6 +55,14 @@ export const createCrowdChart: (params: ICrowdChartParams) => Chart = (params: I
         display: false
       },
       scales: {
+        yAxes: [
+          {
+            ticks: {
+              max: 100,
+              min: 0
+            }
+          }
+        ],
         xAxes:[
           {
             type: 'time',
