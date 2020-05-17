@@ -6,3 +6,5 @@ export const httpClient = axios.create({
     "client-token": "8b1da40e-cb59-456e-846f-4ff9b3517b3b",
   },
 });
+
+export const CancelToken = axios.CancelToken;

@@ -26,6 +26,8 @@ import { getChartDataFromStats } from "../../services/status/utils/getChartDataF
 import { IParsedStats } from "../../services/status/interfaces/IStats";
 import { PlaceSizes } from "../../enums/PlaceSizes";
 import { WeekDays } from "../../enums/WeekDays";
+import { CancelToken } from '../../utils/httpClient';
+import Axios from 'axios';
 
 export const StatisticPage = () => {
   const [stats, setStats] = useState<IParsedStats[]>([]);
@@ -36,11 +38,23 @@ export const StatisticPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const cancelToken = CancelToken.source()
+
     fetchStats({
       moment: dayjs().toISOString(),
       placeModifier: placeSize,
       weekDay: weekDay,
-    }).then(setStats);
+    }, cancelToken.token).then(setStats).catch((error) => {
+      if (Axios.isCancel(error)) {
+        console.log('Request canceled:', error.message);
+      } else {
+        throw error;
+      }
+    });
+    
+    return () => {
+      cancelToken.cancel('Leave the statistic page')
+    };
   }, [placeSize, weekDay]);
 
   useEffect(() => {

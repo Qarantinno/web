@@ -1,5 +1,7 @@
 import { Dayjs } from "dayjs";
 
+import { CancelToken } from 'axios';
+
 import { fetchStats } from "./fetchStats";
 import { IParsedStats } from "./interfaces/IStats";
 
@@ -9,14 +11,15 @@ export interface IFetchRelativeStatsParams {
 }
 
 export function fetchRelativeStats(
-  params: IFetchRelativeStatsParams
+  params: IFetchRelativeStatsParams,
+  cancelToken: CancelToken,
 ): Promise<IParsedStats[]> {
   const { from, to } = params;
   const diff = to.diff(from, "day");
   const requests = [];
 
   for (let i = 0; i <= diff; i += 1) {
-    requests.push(fetchStats({ moment: from.add(i, "day").toISOString() }));
+    requests.push(fetchStats({ moment: from.add(i, "day").toISOString() }, cancelToken));
   }
 
   return Promise.all(requests).then((all) =>

@@ -7,6 +7,8 @@ import { ChartPoint } from "chart.js";
 
 import dayjs from "dayjs";
 
+import Axios from 'axios';
+
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
@@ -23,6 +25,7 @@ import { getChartDataFromStats } from "../../services/status/utils/getChartDataF
 import { IParsedStats } from "../../services/status/interfaces/IStats";
 
 import { Status } from "./components/Status";
+import { CancelToken } from '../../utils/httpClient';
 
 export const HomePage = () => {
   const [stats, setStats] = useState<IParsedStats[]>([]);
@@ -32,15 +35,27 @@ export const HomePage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const cancelToken = CancelToken.source();
+
     fetchRelativeStats({
       from: timer.subtract(5, "hour"),
       to: timer.add(5, "hour"),
-    }).then((data) => {
+    }, cancelToken.token).then((data) => {
       setStats(data);
       setTimeout(() => {
         setTimer(dayjs().minute(0).millisecond(0));
       }, 60000);
+    }).catch((error) => {
+      if (Axios.isCancel(error)) {
+        console.log('Request canceled:', error.message);
+      } else {
+        throw error;
+      }
     });
+
+    return () => {
+      cancelToken.cancel('Leave the home page')
+    };
   }, [timer]);
 
   useEffect(() => {
