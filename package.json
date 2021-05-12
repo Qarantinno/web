@@ -17,7 +17,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.5",
     "axios": "^0.19.2",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "chartjs-plugin-zoom": "^0.7.7",
     "dayjs": "^1.8.26",
     "i18next": "^19.4.4",
